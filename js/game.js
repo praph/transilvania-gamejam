@@ -32,6 +32,11 @@ function preload ()
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+
+    // map made with Tiled in JSON format
+    this.load.tilemapTiledJSON('map', 'assets/map/map.json');
+    // tiles in spritesheet 
+    this.load.spritesheet('tiles', 'assets/map/tiles.png', {frameWidth: 70, frameHeight: 70});
 }
 
 function create ()
@@ -39,18 +44,20 @@ function create ()
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
-    platforms = this.physics.add.staticGroup();
+    // load the map 
+    map = this.make.tilemap({key: 'map'});
 
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+    // tiles for the ground layer
+    var groundTiles = map.addTilesetImage('tiles');
+    // create the ground layer
+    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    // the player will collide with this layer
+    groundLayer.setCollisionByExclusion([-1]);
 
-    //  Now let's create some ledges
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
-
+    // set the boundaries of our game world
+    this.physics.world.bounds.width = groundLayer.width;
+    this.physics.world.bounds.height = groundLayer.height;
+    
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
 
@@ -86,7 +93,11 @@ function create ()
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
     //  Collide the player and the stars with the platforms
-    this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, groundLayer);
+
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.startFollow(player);
+
 }
 
 function update ()
@@ -115,7 +126,7 @@ function update ()
         player.anims.play('turn');
     }
 
-    if (cursors.up.isDown && player.body.touching.down)
+    if (cursors.up.isDown && player.body.onFloor())
     {
         player.setVelocityY(-330);
     }
