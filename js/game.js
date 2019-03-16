@@ -17,6 +17,7 @@ var config = {
 };
 
 var player;
+var enemy;
 var stars;
 var bombs;
 var platforms;
@@ -31,6 +32,8 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 36, frameHeight: 48 });
+
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
@@ -71,20 +74,30 @@ function create ()
 
     // Parallax background
 
-    this.background1 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
+    this.background1 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
 
-    this.background2 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
+    this.background2 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
       
-    this.background3 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
+    this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
-    player = this.physics.add.sprite(400, 450, 'dude');
+    player = this.physics.add.sprite(100, 450, 'dude');
+    enemy = this.physics.add.sprite(400, 450, 'baba');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
+    // baba animation
+    this.anims.create({
+        key: 'baba-walk',
+        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 7 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    // player anims
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -113,6 +126,7 @@ function create ()
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
+    this.physics.add.collider(enemy, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -123,6 +137,8 @@ function create ()
 
 function update ()
 {
+    enemy.anims.play('baba-walk', true);
+
     this.speed = {
         background1: 1.6,
         background2: 1.3,
