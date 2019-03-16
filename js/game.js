@@ -33,6 +33,7 @@ var fpsText;
 // enemies
 var enemyGroup;
 var enemies = []; // arr
+var bullets = []; // arr
 
 var game = new Phaser.Game(config);
 
@@ -93,19 +94,6 @@ function create ()
     
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
-
-    // usturoi = this.add.particles('usturoi');
-    // bullet = usturoi.createEmitter({
-    //     x: enemy.x,
-    //     y: enemy.y,
-    //     speed: 180,
-    //     lifespan: 3000,
-    //     // accelerationX: 100,
-    //     angle: 180,
-    //     delay: 100,
-    //     frequency: 1000,
-    //     emitZone: enemy
-    // });
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -171,24 +159,22 @@ function create ()
     takenDamageText.setScrollFactor(0);
 
     // enemies
-    // enemyGroup = this.physics.add.group();
     var anim1 = map.createFromObjects('Enemies', 'anim1', { key: 'tile_castle_sprite', frame: 5 });
     
-    // generateEnemies(anim1).bind(this);
-    
-
-
-    anim1.forEach(res => {
-        const newEnemy = this.physics.add.sprite(res.x, res.y, 'baba');
+    anim1.forEach(anim1 => {
+        const newEnemy = this.physics.add.sprite(anim1.x, anim1.y, 'baba');
         this.physics.add.collider(newEnemy, groundLayer);
         enemies.push(newEnemy);
         
-        res.destroy();
+        anim1.destroy();
+
+        this.physics.add.collider(player, newEnemy, hitPlayer, null, this);
+
+        shoot(newEnemy, this.physics);
     })
 
     fpsText = this.add.text(16, 48, 'fps');
     fpsText.setScrollFactor(0);
-    // usturoi =  this.add.image(enemies[0].x, enemies[0].y, "usturoi");
 }
 
 function oFunctie(sprite, health){
@@ -196,9 +182,35 @@ function oFunctie(sprite, health){
     takenDamage = false;
 }
 
+function hitPlayer (player, enemy)
+{
+    enemy.destroy();
+}
+
+function shoot(enemy, physics){
+    const usturoi = physics.add.sprite(enemy.x, enemy.y, "usturoi");
+    usturoi.body.setAllowGravity(false);
+
+    if(enemy.x > player.x) {
+        usturoi.body.velocity.x = -500;
+    } else {
+        usturoi.body.velocity.x = 500;
+    }
+
+    setTimeout(() => {
+        if(!enemy.active)
+            return;
+
+        bullets.push(usturoi);
+        shoot(enemy, physics);
+    }, Phaser.Math.FloatBetween(1, 10) * 1000)
+}
+
 function animateEnemies(){
-    enemies.forEach(enemy => {
-        // console.log(enemy);
+    enemies.forEach((enemy, index) => {
+        if(!enemy.active)
+            return;
+        
         if(enemy.x > player.x) {
             enemySpeed = -60;
             enemy.anims.play('baba-left', true);
@@ -210,27 +222,24 @@ function animateEnemies(){
     })
 }
 
+function cleanUpEnemies(){
+    enemies.forEach((enemy, index) => {
+        if(!enemy.active)
+            enemies.splice(index, 1);
+    })
+}
+
 function update ()
-{ 
+{
+    cleanUpEnemies();
+    
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
     fpsText.setText('fps: ' + game.loop.actualFps);
 
     animateEnemies();
-    // usturoi.x ++;
 
-    this.physics.add.collider(player, enemies[0], hitPlayer, null, this);
-    function hitPlayer (player, enemy)
-    {
-        this.physics.pause();
-
-        player.setTint(0xff0000);
-
-        player.anims.play('turn');
-
-        // gameOver = true;
-    }
     this.speed = {
         background1: 1.6,
         background2: 1.3,
