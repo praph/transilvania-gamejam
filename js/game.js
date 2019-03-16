@@ -18,21 +18,24 @@ var config = {
 
 var player;
 var enemy;
-var stars;
-var bombs;
+var enemySpeed;
+var usturoi;
+var bullet;
 var platforms;
 var cursors;
-var score = 0;
 var gameOver = false;
-var scoreText;
 var night = false;
+var nightModeText;
+var takenDamage = false;
+var takenDamageText;
 
 var game = new Phaser.Game(config);
 
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 36, frameHeight: 48 });
+    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
+    this.load.image("usturoi", "assets/usturoi.png");
 
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
@@ -40,16 +43,12 @@ function preload ()
     this.load.image("background-1", "assets/background/background-1.png");
     this.load.image("background-2", "assets/background/background-2.png");
     this.load.image("background-3", "assets/background/background-3.png");
-    // map made with Tiled in JSON format
-    // this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-    // tiles in spritesheet 
-    // this.load.spritesheet('tiles', 'assets/map/tiles.png', {frameWidth: 70, frameHeight: 70});
+
+    this.load.spritesheet('tile_castle_sprite', 'assets/map/tile_castle.png', { frameWidth: 32, frameHeight: 32 });
 }
 
 function create ()
 { 
-
-
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -58,16 +57,20 @@ function create ()
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
-    const backgroundLayer = map.createDynamicLayer("Background", this.tileset, 0, 0);
-  
+    const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
+    const background2Layer = map.createDynamicLayer("Background2", this.tileset_grey, 0, 0);
+    var coins = map.createFromObjects('Objects', 'shadow', { key: 'tile_castle_sprite', frame: 5 });
+    var coinsGroup = this.physics.add.group();
 
-    // load the map 
-    // map = this.make.tilemap({key: 'map'});
+    coins.forEach(sprite => {
+        coinsGroup.add(sprite)
+    })
+    coinsGroup.children.entries.forEach(sprite => {
+        sprite.body.setAllowGravity(false);
+        sprite.setAlpha(0);
+        // sprite.alpha
+    })
 
-    // tiles for the ground layer
-    // var groundTiles = map.addTilesetImage('tiles');
-    // create the ground layer
-    // groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
     // the player will collide with this layer
     groundLayer.setCollisionByExclusion([-1]);
 
@@ -84,9 +87,23 @@ function create ()
     this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
 
+    // usturoi = this.add.particles('usturoi');
+    // bullet = usturoi.createEmitter({
+    //     x: enemy.x,
+    //     y: enemy.y,
+    //     speed: 180,
+    //     lifespan: 3000,
+    //     // accelerationX: 100,
+    //     angle: 180,
+    //     delay: 100,
+    //     frequency: 1000,
+    //     emitZone: enemy
+    // });
+
+    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -94,8 +111,14 @@ function create ()
     //  Our player animations, turning, walking left and walking right.
     // baba animation
     this.anims.create({
-        key: 'baba-walk',
-        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 7 }),
+        key: 'baba-left',
+        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'baba-right',
+        frames: this.anims.generateFrameNumbers('baba', { start: 4, end: 8 }),
         frameRate: 10,
         repeat: -1
     });
@@ -125,8 +148,10 @@ function create ()
     cursors = this.input.keyboard.createCursorKeys();
 
     //  The score
-    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    nightModeText = this.add.text(16, 16, night ? 'night mode' : 'not night');
+    nightModeText.setScrollFactor(0);
 
+    // enemy interactions
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
     this.physics.add.collider(enemy, groundLayer);
@@ -136,12 +161,47 @@ function create ()
 
     this.buttons = {}
     this.buttons.nightMode = this.input.keyboard.addKey('n');  // Get key object
+
+    this.physics.add.overlap(player, coinsGroup, oFunctie);
+
+    // night damage
+    takenDamageText = this.add.text(16, 32, takenDamage ? 'la soare!!!' : 'la umbra');
+    takenDamageText.setScrollFactor(0);
+}
+function oFunctie(sprite, health){
+    // console.log(123);
+    takenDamage = false;
 }
 
 function update ()
-{
-    enemy.anims.play('baba-walk', true);
+{ 
+    takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
+    takenDamage = true;
 
+    usturoi.x ++;
+    if(enemy.x > player.x + 50) {
+        enemySpeed = -60;
+        enemy.anims.play('baba-left', true);
+    } else if(enemy.x < player.x - 50){
+        enemy.anims.play('baba-right', true);
+        enemySpeed = 60;
+    }
+    enemy.setVelocityX(enemySpeed);
+    if(enemy.x > player.x + 120) {
+        
+    }
+
+    this.physics.add.collider(player, enemy, hitPlayer, null, this);
+    function hitPlayer (player, enemy)
+    {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        // gameOver = true;
+    }
     this.speed = {
         background1: 1.6,
         background2: 1.3,
@@ -183,7 +243,7 @@ function update ()
 
     if (cursors.up.isDown && player.body.onFloor())
     {
-        player.setVelocityY(-350);
+        player.setVelocityY(-370);
     }
 
     if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
