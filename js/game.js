@@ -56,7 +56,9 @@ function create ()
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
     this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const groundLayer = map.createDynamicLayer("Ground", this.tileset, 0, 0);
+    const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
+    const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
+    const backgroundLayer = map.createDynamicLayer("Background", this.tileset, 0, 0);
   
 
     // load the map 
