@@ -22,6 +22,7 @@ var monk;
 var enemySpeed;
 var usturoi;
 var bullet;
+var pope;
 var platforms;
 var lady;
 var cursors;
@@ -39,7 +40,9 @@ function preload ()
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
 
     this.load.spritesheet('monk', 'assets/monk.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('lady', 'assets/lady.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('lady', 'assets/lady.png', { frameWidth: 24, frameHeight: 48 });
+
+    this.load.spritesheet('pope', 'assets/pope.png', { frameWidth: 73, frameHeight: 68 });
 
     this.load.image("usturoi", "assets/usturoi.png");
 
@@ -95,8 +98,9 @@ function create ()
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
-    lady = this.physics.add.sprite(600, 450, 'lady');
+    lady = this.physics.add.sprite(200, 450, 'lady');
 
+    pope = this.physics.add.sprite(300, 450, 'pope');
 
     monk = this.physics.add.sprite(600, 450, 'monk');
 
@@ -107,6 +111,22 @@ function create ()
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
+    //pope anim
+    this.anims.create({
+        key: 'pope',
+        frames: this.anims.generateFrameNumbers('pope', { start: 0, end: 15 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    //lady anim
+    this.anims.create({
+        key: 'lady-left',
+        frames: this.anims.generateFrameNumbers('lady', { start: 0, end: 9 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
     // monk animation
     this.anims.create({
         key: 'monk-left',
@@ -180,6 +200,8 @@ function create ()
     this.physics.add.collider(player, groundLayer);
     this.physics.add.collider(enemy, groundLayer);
     this.physics.add.collider(monk, groundLayer);
+    this.physics.add.collider(lady, groundLayer);
+    this.physics.add.collider(pope, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -203,6 +225,8 @@ function update ()
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
+    pope.anims.play('pope', true);
+    lady.anims.play('lady-left', true);
     // monk.anims.play('monk-right', true);
     // monk.anims.play('monk-left', true);
     // monk.anims.play('monk-pow-left', true);
