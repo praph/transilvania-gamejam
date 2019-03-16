@@ -44,18 +44,7 @@ function preload ()
 }
 
 function create ()
-{   
-    // Background
-    this.background1 = this.add.tileSprite(400, 300, 1600, 600, 'background-1');
-    // this.background1.setScale(heightRatio);
-
-    this.background2 = this.add.tileSprite(400, 300, 1600, 600, 'background-2');
-    // this.background2.setScale(heightRatio);
-    
-    this.background3 = this.add.tileSprite(400, 300, 1600, 600, 'background-3');
-    // this.background3.setScale(heightRatio);
-
-
+{ 
 
 
     const map = this.make.tilemap({key:"map"})
@@ -64,6 +53,7 @@ function create ()
     this.tileset = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const groundLayer = map.createDynamicLayer("Ground", this.tileset, 0, 0);
+  
 
     // load the map 
     // map = this.make.tilemap({key: 'map'});
@@ -78,6 +68,14 @@ function create ()
     // set the boundaries of our game world
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
+
+    // Parallax background
+
+    this.background1 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
+
+    this.background2 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
+      
+    this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -126,14 +124,10 @@ function create ()
 function update ()
 {
     this.speed = {
-        background1: 3,
-        background2: 4,
-        background3: 5,
+        background1: 1.6,
+        background2: 1.3,
+        background3: 0.9,
     }
-    // Background paralax
-    // this.background1.tilePositionX += this.speed.background1;
-    // this.background2.tilePositionX += this.speed.background2;
-    // this.background3.tilePositionX += this.speed.background3;
 
     if (gameOver)
     {
@@ -145,12 +139,20 @@ function update ()
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
+
+        this.background1.tilePositionX -= this.speed.background1;
+        this.background2.tilePositionX -= this.speed.background2;
+        this.background3.tilePositionX -= this.speed.background3;
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
+        
+        this.background1.tilePositionX += this.speed.background1;
+        this.background2.tilePositionX += this.speed.background2;
+        this.background3.tilePositionX += this.speed.background3;
 
     }
     else
