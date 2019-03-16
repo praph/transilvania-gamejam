@@ -24,6 +24,7 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
+var night = false;
 
 var game = new Phaser.Game(config);
 
@@ -108,6 +109,8 @@ function create ()
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
 
+    this.buttons = {}
+    this.buttons.nightMode = this.input.keyboard.addKey('n');  // Get key object
 }
 
 function update ()
@@ -122,9 +125,6 @@ function update ()
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
-
-        var texture = this.sys.textures.get('tiles_grey');
-        this.tileset.setImage(texture);
     }
     else if (cursors.right.isDown)
     {
@@ -132,8 +132,6 @@ function update ()
 
         player.anims.play('right', true);
 
-        var texture = this.sys.textures.get('tiles');
-        this.tileset.setImage(texture);
     }
     else
     {
@@ -145,5 +143,17 @@ function update ()
     if (cursors.up.isDown && player.body.onFloor())
     {
         player.setVelocityY(-330);
+    }
+
+    if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
+        if(night){
+            var texture = this.sys.textures.get('tiles_grey');
+            this.tileset.setImage(texture);
+        }else{
+            var texture = this.sys.textures.get('tiles');
+            this.tileset.setImage(texture);
+        }
+
+        night = !night;
     }
 }
