@@ -40,16 +40,12 @@ function preload ()
     this.load.image("background-1", "assets/background/background-1.png");
     this.load.image("background-2", "assets/background/background-2.png");
     this.load.image("background-3", "assets/background/background-3.png");
-    // map made with Tiled in JSON format
-    // this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-    // tiles in spritesheet 
-    // this.load.spritesheet('tiles', 'assets/map/tiles.png', {frameWidth: 70, frameHeight: 70});
+
+    this.load.spritesheet('tile_castle_sprite', 'assets/map/tile_castle.png', { frameWidth: 32, frameHeight: 32 });
 }
 
 function create ()
 { 
-
-
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -59,15 +55,16 @@ function create ()
     const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
     const backgroundLayer = map.createDynamicLayer("Background", this.tileset, 0, 0);
-  
+    var coins = map.createFromObjects('Objects', '1', { key: 'tile_castle_sprite', frame: 5 });
+    var coinsGroup = this.physics.add.group();
 
-    // load the map 
-    // map = this.make.tilemap({key: 'map'});
+    coins.forEach(sprite => {
+        coinsGroup.add(sprite)
+    })
+    coinsGroup.children.entries.forEach(sprite => {
+        sprite.body.setAllowGravity(false);
+    })
 
-    // tiles for the ground layer
-    // var groundTiles = map.addTilesetImage('tiles');
-    // create the ground layer
-    // groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
     // the player will collide with this layer
     groundLayer.setCollisionByExclusion([-1]);
 
@@ -84,7 +81,7 @@ function create ()
     this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
 
     //  Player physics properties. Give the little guy a slight bounce.
@@ -136,12 +133,17 @@ function create ()
 
     this.buttons = {}
     this.buttons.nightMode = this.input.keyboard.addKey('n');  // Get key object
+
+    this.physics.add.overlap(player, coinsGroup, oFunctie);
+}
+function oFunctie(sprite, health){
+    console.log(123);
 }
 
 function update ()
 {
     enemy.anims.play('baba-walk', true);
-
+    
     this.speed = {
         background1: 1.6,
         background2: 1.3,
@@ -183,7 +185,7 @@ function update ()
 
     if (cursors.up.isDown && player.body.onFloor())
     {
-        player.setVelocityY(-350);
+        player.setVelocityY(-370);
     }
 
     if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
