@@ -20,6 +20,7 @@ var player;
 var enemy;
 var enemySpeed;
 var usturoi;
+var bullet;
 var platforms;
 var cursors;
 var score = 0;
@@ -86,6 +87,20 @@ function create ()
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
+
+    // usturoi = this.add.particles('usturoi');
+    // bullet = usturoi.createEmitter({
+    //     x: enemy.x,
+    //     y: enemy.y,
+    //     speed: 180,
+    //     lifespan: 3000,
+    //     // accelerationX: 100,
+    //     angle: 180,
+    //     delay: 100,
+    //     frequency: 1000,
+    //     emitZone: enemy
+    // });
+
     usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
@@ -146,7 +161,8 @@ function create ()
 }
 
 function update ()
-{
+{ 
+    usturoi.x ++;
     if(enemy.x > player.x + 50) {
         enemySpeed = -60;
         enemy.anims.play('baba-left', true);
@@ -155,6 +171,9 @@ function update ()
         enemySpeed = 60;
     }
     enemy.setVelocityX(enemySpeed);
+    if(enemy.x > player.x + 120) {
+        
+    }
 
     this.physics.add.collider(player, enemy, hitPlayer, null, this);
     function hitPlayer (player, enemy)
