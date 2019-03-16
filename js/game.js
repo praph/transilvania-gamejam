@@ -30,8 +30,8 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.image("tiles", "assets/new-map/tile_castle.png");
-    this.load.tilemapTiledJSON("map", "assets/new-map/map.json");
+    this.load.image("tiles", "assets/map/tile_castle.png");
+    this.load.tilemapTiledJSON("map", "assets/map/map.json");
     this.load.image("background-1", "assets/background/background-1.png");
     this.load.image("background-2", "assets/background/background-2.png");
     this.load.image("background-3", "assets/background/background-3.png");
