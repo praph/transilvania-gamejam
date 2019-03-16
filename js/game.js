@@ -18,6 +18,7 @@ var config = {
 
 var player;
 var enemy;
+var monk;
 var enemySpeed;
 var usturoi;
 var bullet;
@@ -35,6 +36,9 @@ function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
+
+    this.load.spritesheet('monk', 'assets/monk.png', { frameWidth: 32, frameHeight: 48 });
+
     this.load.image("usturoi", "assets/usturoi.png");
 
     this.load.image("tiles", "assets/map/tile_castle.png");
@@ -90,18 +94,9 @@ function create ()
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
 
-    // usturoi = this.add.particles('usturoi');
-    // bullet = usturoi.createEmitter({
-    //     x: enemy.x,
-    //     y: enemy.y,
-    //     speed: 180,
-    //     lifespan: 3000,
-    //     // accelerationX: 100,
-    //     angle: 180,
-    //     delay: 100,
-    //     frequency: 1000,
-    //     emitZone: enemy
-    // });
+
+    monk = this.physics.add.sprite(600, 450, 'monk');
+
 
     usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
@@ -109,6 +104,32 @@ function create ()
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
+    // monk animation
+    this.anims.create({
+        key: 'monk-left',
+        frames: this.anims.generateFrameNumbers('monk', { start: 0, end: 5 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'monk-right',
+        frames: this.anims.generateFrameNumbers('monk', { start: 6, end: 11 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'monk-pow-left',
+        frames: this.anims.generateFrameNumbers('monk', { start: 12, end: 17 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'monk-pow-right',
+        frames: this.anims.generateFrameNumbers('monk', { start: 18, end: 24 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
     // baba animation
     this.anims.create({
         key: 'baba-left',
@@ -155,6 +176,7 @@ function create ()
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
     this.physics.add.collider(enemy, groundLayer);
+    this.physics.add.collider(monk, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -178,6 +200,10 @@ function update ()
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
+    // monk.anims.play('monk-right', true);
+    // monk.anims.play('monk-left', true);
+    // monk.anims.play('monk-pow-left', true);
+    monk.anims.play('monk-pow-right', true);
     usturoi.x ++;
     if(enemy.x > player.x + 50) {
         enemySpeed = -60;
