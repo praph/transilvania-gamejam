@@ -29,28 +29,34 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('ground', 'assets/platform.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 
+    this.load.image("tiles", "assets/new-map/tile_castle.png");
+    this.load.tilemapTiledJSON("map", "assets/new-map/map.json");
     // map made with Tiled in JSON format
-    this.load.tilemapTiledJSON('map', 'assets/map/map.json');
+    // this.load.tilemapTiledJSON('map', 'assets/map/map.json');
     // tiles in spritesheet 
-    this.load.spritesheet('tiles', 'assets/map/tiles.png', {frameWidth: 70, frameHeight: 70});
+    // this.load.spritesheet('tiles', 'assets/map/tiles.png', {frameWidth: 70, frameHeight: 70});
 }
 
 function create ()
 {
-    //  A simple background for our game
-    this.add.image(400, 300, 'sky');
+    const map = this.make.tilemap({key:"map"})
+    // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
+    // Phaser's cache (i.e. the name you used in preload)
+    const tileset = map.addTilesetImage('tile_castle', "tiles");
+
+    // Parameters: layer name (or index) from Tiled, tileset, x, y
+    const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
+
 
     // load the map 
-    map = this.make.tilemap({key: 'map'});
+    // map = this.make.tilemap({key: 'map'});
 
     // tiles for the ground layer
-    var groundTiles = map.addTilesetImage('tiles');
+    // var groundTiles = map.addTilesetImage('tiles');
     // create the ground layer
-    groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
+    // groundLayer = map.createDynamicLayer('World', groundTiles, 0, 0);
     // the player will collide with this layer
     groundLayer.setCollisionByExclusion([-1]);
 
