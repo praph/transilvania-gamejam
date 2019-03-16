@@ -18,7 +18,7 @@ var config = {
 
 var player;
 var enemy;
-var stars;
+var enemySpeed;
 var bombs;
 var platforms;
 var cursors;
@@ -94,8 +94,14 @@ function create ()
     //  Our player animations, turning, walking left and walking right.
     // baba animation
     this.anims.create({
-        key: 'baba-walk',
-        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 7 }),
+        key: 'baba-left',
+        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'baba-right',
+        frames: this.anims.generateFrameNumbers('baba', { start: 4, end: 8 }),
         frameRate: 10,
         repeat: -1
     });
@@ -127,6 +133,7 @@ function create ()
     //  The score
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
+    // enemy interactions
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
     this.physics.add.collider(enemy, groundLayer);
@@ -140,8 +147,26 @@ function create ()
 
 function update ()
 {
-    enemy.anims.play('baba-walk', true);
+    if(enemy.x > player.x + 50) {
+        enemySpeed = -60;
+        enemy.anims.play('baba-left', true);
+    } else if(enemy.x < player.x - 50){
+        enemy.anims.play('baba-right', true);
+        enemySpeed = 60;
+    }
+    enemy.setVelocityX(enemySpeed);
 
+    this.physics.add.collider(player, enemy, hitPlayer, null, this);
+    function hitPlayer (player, enemy)
+    {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        // gameOver = true;
+    }
     this.speed = {
         background1: 1.6,
         background2: 1.3,
