@@ -19,7 +19,7 @@ var config = {
 var player;
 var enemy;
 var enemySpeed;
-var bombs;
+var usturoi;
 var platforms;
 var cursors;
 var score = 0;
@@ -33,6 +33,7 @@ function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
+    this.load.image("usturoi", "assets/usturoi.png");
 
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
@@ -60,7 +61,6 @@ function create ()
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
     const backgroundLayer = map.createDynamicLayer("Background", this.tileset, 0, 0);
   
-
     // load the map 
     // map = this.make.tilemap({key: 'map'});
 
@@ -86,7 +86,7 @@ function create ()
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
-
+    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
