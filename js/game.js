@@ -28,6 +28,12 @@ var night = false;
 var nightModeText;
 var takenDamage = false;
 var takenDamageText;
+var fpsText;
+
+// enemies
+var enemyGroup;
+var enemies = []; // arr
+var bullets = []; // arr
 
 var game = new Phaser.Game(config);
 
@@ -88,22 +94,7 @@ function create ()
     
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
-    enemy = this.physics.add.sprite(400, 450, 'baba');
 
-    // usturoi = this.add.particles('usturoi');
-    // bullet = usturoi.createEmitter({
-    //     x: enemy.x,
-    //     y: enemy.y,
-    //     speed: 180,
-    //     lifespan: 3000,
-    //     // accelerationX: 100,
-    //     angle: 180,
-    //     delay: 100,
-    //     frequency: 1000,
-    //     emitZone: enemy
-    // });
-
-    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -154,7 +145,6 @@ function create ()
     // enemy interactions
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
-    this.physics.add.collider(enemy, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -167,41 +157,89 @@ function create ()
     // night damage
     takenDamageText = this.add.text(16, 32, takenDamage ? 'la soare!!!' : 'la umbra');
     takenDamageText.setScrollFactor(0);
+
+    // enemies
+    var anim1 = map.createFromObjects('Enemies', 'anim1', { key: 'tile_castle_sprite', frame: 5 });
+    
+    anim1.forEach(anim1 => {
+        const newEnemy = this.physics.add.sprite(anim1.x, anim1.y, 'baba');
+        this.physics.add.collider(newEnemy, groundLayer);
+        enemies.push(newEnemy);
+        
+        anim1.destroy();
+
+        this.physics.add.collider(player, newEnemy, hitPlayer, null, this);
+
+        shoot(newEnemy, this.physics);
+    })
+
+    fpsText = this.add.text(16, 48, 'fps');
+    fpsText.setScrollFactor(0);
 }
+
 function oFunctie(sprite, health){
     // console.log(123);
     takenDamage = false;
 }
 
+function hitPlayer (player, enemy)
+{
+    enemy.destroy();
+}
+
+function shoot(enemy, physics){
+    const usturoi = physics.add.sprite(enemy.x, enemy.y, "usturoi");
+    usturoi.body.setAllowGravity(false);
+
+    if(enemy.x > player.x) {
+        usturoi.body.velocity.x = -500;
+    } else {
+        usturoi.body.velocity.x = 500;
+    }
+
+    setTimeout(() => {
+        if(!enemy.active)
+            return;
+
+        bullets.push(usturoi);
+        shoot(enemy, physics);
+    }, Phaser.Math.FloatBetween(1, 10) * 1000)
+}
+
+function animateEnemies(){
+    enemies.forEach((enemy, index) => {
+        if(!enemy.active)
+            return;
+        
+        if(enemy.x > player.x) {
+            enemySpeed = -60;
+            enemy.anims.play('baba-left', true);
+        } else {
+            enemySpeed = 60;
+            enemy.anims.play('baba-right', true);
+        }
+        enemy.setVelocityX(enemySpeed);
+    })
+}
+
+function cleanUpEnemies(){
+    enemies.forEach((enemy, index) => {
+        if(!enemy.active)
+            enemies.splice(index, 1);
+    })
+}
+
 function update ()
-{ 
+{
+    cleanUpEnemies();
+    
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
-    usturoi.x ++;
-    if(enemy.x > player.x + 50) {
-        enemySpeed = -60;
-        enemy.anims.play('baba-left', true);
-    } else if(enemy.x < player.x - 50){
-        enemy.anims.play('baba-right', true);
-        enemySpeed = 60;
-    }
-    enemy.setVelocityX(enemySpeed);
-    if(enemy.x > player.x + 120) {
-        
-    }
+    fpsText.setText('fps: ' + game.loop.actualFps);
 
-    this.physics.add.collider(player, enemy, hitPlayer, null, this);
-    function hitPlayer (player, enemy)
-    {
-        this.physics.pause();
+    animateEnemies();
 
-        player.setTint(0xff0000);
-
-        player.anims.play('turn');
-
-        // gameOver = true;
-    }
     this.speed = {
         background1: 1.6,
         background2: 1.3,
