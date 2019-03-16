@@ -17,6 +17,7 @@ var config = {
 };
 
 var player;
+var enemy;
 var stars;
 var bombs;
 var platforms;
@@ -31,6 +32,8 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 36, frameHeight: 48 });
+
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
@@ -44,19 +47,17 @@ function preload ()
 }
 
 function create ()
-{
-    this.add.image(400, 300, "background-1");
-    this.add.image(400, 300, "background-2");
-    this.add.image(400, 300, "background-3");
+{ 
+
+
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
     this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
-    const groundNightLayer = map.createStaticLayer("GroundNight", this.tileset, 0, 0);
-    const backgroundLayer = map.createStaticLayer("Background", this.tileset, 0, 0);
+    const groundLayer = map.createDynamicLayer("Ground", this.tileset, 0, 0);
+  
 
     // load the map 
     // map = this.make.tilemap({key: 'map'});
@@ -71,15 +72,33 @@ function create ()
     // set the boundaries of our game world
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
+
+    // Parallax background
+
+    this.background1 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
+
+    this.background2 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
+      
+    this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
+    enemy = this.physics.add.sprite(400, 450, 'baba');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
+    // baba animation
+    this.anims.create({
+        key: 'baba-walk',
+        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 7 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    // player anims
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -108,6 +127,7 @@ function create ()
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
+    this.physics.add.collider(enemy, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -118,6 +138,14 @@ function create ()
 
 function update ()
 {
+    enemy.anims.play('baba-walk', true);
+
+    this.speed = {
+        background1: 1.6,
+        background2: 1.3,
+        background3: 0.9,
+    }
+
     if (gameOver)
     {
         return;
@@ -128,12 +156,20 @@ function update ()
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
+
+        this.background1.tilePositionX -= this.speed.background1;
+        this.background2.tilePositionX -= this.speed.background2;
+        this.background3.tilePositionX -= this.speed.background3;
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
+        
+        this.background1.tilePositionX += this.speed.background1;
+        this.background2.tilePositionX += this.speed.background2;
+        this.background3.tilePositionX += this.speed.background3;
 
     }
     else
