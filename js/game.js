@@ -51,9 +51,12 @@ function create ()
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
-    this.tileset = map.addTilesetImage('tile_castle_grey', "tiles_grey");
+    this.tileset = map.addTilesetImage('tile_castle', "tiles");
+    this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
-    const groundLayer = map.createDynamicLayer("Ground", this.tileset, 0, 0);
+    const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
+    const groundNightLayer = map.createStaticLayer("GroundNight", this.tileset, 0, 0);
+    const backgroundLayer = map.createStaticLayer("Background", this.tileset, 0, 0);
 
     // load the map 
     // map = this.make.tilemap({key: 'map'});
@@ -148,10 +151,10 @@ function update ()
     if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
         if(night){
             var texture = this.sys.textures.get('tiles_grey');
-            this.tileset.setImage(texture);
+            this.tileset_grey.setImage(texture);
         }else{
             var texture = this.sys.textures.get('tiles');
-            this.tileset.setImage(texture);
+            this.tileset_grey.setImage(texture);
         }
 
         night = !night;
