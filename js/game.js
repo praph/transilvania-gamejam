@@ -28,6 +28,11 @@ var night = false;
 var nightModeText;
 var takenDamage = false;
 var takenDamageText;
+var fpsText;
+
+// enemies
+var enemyGroup;
+var enemies = []; // arr
 
 var game = new Phaser.Game(config);
 
@@ -88,7 +93,6 @@ function create ()
     
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
-    enemy = this.physics.add.sprite(400, 450, 'baba');
 
     // usturoi = this.add.particles('usturoi');
     // bullet = usturoi.createEmitter({
@@ -103,7 +107,6 @@ function create ()
     //     emitZone: enemy
     // });
 
-    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -154,7 +157,6 @@ function create ()
     // enemy interactions
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
-    this.physics.add.collider(enemy, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
@@ -167,10 +169,45 @@ function create ()
     // night damage
     takenDamageText = this.add.text(16, 32, takenDamage ? 'la soare!!!' : 'la umbra');
     takenDamageText.setScrollFactor(0);
+
+    // enemies
+    // enemyGroup = this.physics.add.group();
+    var anim1 = map.createFromObjects('Enemies', 'anim1', { key: 'tile_castle_sprite', frame: 5 });
+    
+    // generateEnemies(anim1).bind(this);
+    
+
+
+    anim1.forEach(res => {
+        const newEnemy = this.physics.add.sprite(res.x, res.y, 'baba');
+        this.physics.add.collider(newEnemy, groundLayer);
+        enemies.push(newEnemy);
+        
+        res.destroy();
+    })
+
+    fpsText = this.add.text(16, 48, 'fps');
+    fpsText.setScrollFactor(0);
+    // usturoi =  this.add.image(enemies[0].x, enemies[0].y, "usturoi");
 }
+
 function oFunctie(sprite, health){
     // console.log(123);
     takenDamage = false;
+}
+
+function animateEnemies(){
+    enemies.forEach(enemy => {
+        // console.log(enemy);
+        if(enemy.x > player.x) {
+            enemySpeed = -60;
+            enemy.anims.play('baba-left', true);
+        } else {
+            enemySpeed = 60;
+            enemy.anims.play('baba-right', true);
+        }
+        enemy.setVelocityX(enemySpeed);
+    })
 }
 
 function update ()
@@ -178,20 +215,12 @@ function update ()
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
-    usturoi.x ++;
-    if(enemy.x > player.x + 50) {
-        enemySpeed = -60;
-        enemy.anims.play('baba-left', true);
-    } else if(enemy.x < player.x - 50){
-        enemy.anims.play('baba-right', true);
-        enemySpeed = 60;
-    }
-    enemy.setVelocityX(enemySpeed);
-    if(enemy.x > player.x + 120) {
-        
-    }
+    fpsText.setText('fps: ' + game.loop.actualFps);
 
-    this.physics.add.collider(player, enemy, hitPlayer, null, this);
+    animateEnemies();
+    // usturoi.x ++;
+
+    this.physics.add.collider(player, enemies[0], hitPlayer, null, this);
     function hitPlayer (player, enemy)
     {
         this.physics.pause();
