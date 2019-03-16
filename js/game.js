@@ -18,8 +18,9 @@ var config = {
 
 var player;
 var enemy;
-var stars;
-var bombs;
+var enemySpeed;
+var usturoi;
+var bullet;
 var platforms;
 var cursors;
 var gameOver = false;
@@ -33,7 +34,8 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 36, frameHeight: 48 });
+    this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
+    this.load.image("usturoi", "assets/usturoi.png");
 
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
@@ -88,6 +90,20 @@ function create ()
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
 
+    // usturoi = this.add.particles('usturoi');
+    // bullet = usturoi.createEmitter({
+    //     x: enemy.x,
+    //     y: enemy.y,
+    //     speed: 180,
+    //     lifespan: 3000,
+    //     // accelerationX: 100,
+    //     angle: 180,
+    //     delay: 100,
+    //     frequency: 1000,
+    //     emitZone: enemy
+    // });
+
+    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -95,8 +111,14 @@ function create ()
     //  Our player animations, turning, walking left and walking right.
     // baba animation
     this.anims.create({
-        key: 'baba-walk',
-        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 7 }),
+        key: 'baba-left',
+        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'baba-right',
+        frames: this.anims.generateFrameNumbers('baba', { start: 4, end: 8 }),
         frameRate: 10,
         repeat: -1
     });
@@ -129,6 +151,7 @@ function create ()
     nightModeText = this.add.text(16, 16, night ? 'night mode' : 'not night');
     nightModeText.setScrollFactor(0);
 
+    // enemy interactions
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
     this.physics.add.collider(enemy, groundLayer);
@@ -151,13 +174,36 @@ function oFunctie(sprite, health){
 }
 
 function update ()
-{
-    // debugger;
+{ 
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
     enemy.anims.play('baba-walk', true);
     
+    usturoi.x ++;
+    if(enemy.x > player.x + 50) {
+        enemySpeed = -60;
+        enemy.anims.play('baba-left', true);
+    } else if(enemy.x < player.x - 50){
+        enemy.anims.play('baba-right', true);
+        enemySpeed = 60;
+    }
+    enemy.setVelocityX(enemySpeed);
+    if(enemy.x > player.x + 120) {
+        
+    }
+
+    this.physics.add.collider(player, enemy, hitPlayer, null, this);
+    function hitPlayer (player, enemy)
+    {
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        player.anims.play('turn');
+
+        // gameOver = true;
+    }
     this.speed = {
         background1: 1.6,
         background2: 1.3,
