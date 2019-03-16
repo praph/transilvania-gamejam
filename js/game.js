@@ -71,14 +71,14 @@ function create ()
 
     // Parallax background
 
-    this.background1 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
+    this.background1 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
 
-    this.background2 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
+    this.background2 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
       
-    this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
+    this.background3 = this.add.tileSprite(400, 310, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
     
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(400, 450, 'dude');
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
