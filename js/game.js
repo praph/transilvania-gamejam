@@ -30,9 +30,9 @@ var game = new Phaser.Game(config);
 function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-
     this.load.image("tiles", "assets/new-map/tile_castle.png");
     this.load.tilemapTiledJSON("map", "assets/new-map/map.json");
+    this.load.image("background", "assets/background.png");
     // map made with Tiled in JSON format
     // this.load.tilemapTiledJSON('map', 'assets/map/map.json');
     // tiles in spritesheet 
@@ -41,14 +41,13 @@ function preload ()
 
 function create ()
 {
+    this.add.image(400, 300, "background");
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     const tileset = map.addTilesetImage('tile_castle', "tiles");
-
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const groundLayer = map.createDynamicLayer("Ground", tileset, 0, 0);
-
 
     // load the map 
     // map = this.make.tilemap({key: 'map'});
