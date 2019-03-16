@@ -61,11 +61,12 @@ function create ()
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
     this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
+    const backgroundCastleLayer = map.createDynamicLayer("Castel", this.tileset_grey, 0, 0);
     const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
-    const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
-    const background2Layer = map.createDynamicLayer("Background2", this.tileset_grey, 0, 0);
-    var coins = map.createFromObjects('Objects', 'shadow', { key: 'tile_castle_sprite', frame: 5 });
+    // const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
+    const backgroundUsiLayer = map.createDynamicLayer("Usi", this.tileset_grey, 0, 0);
+    var coins = map.createFromObjects('Night', 'shadow', { key: 'tile_castle_sprite', frame: 5 });
     var coinsGroup = this.physics.add.group();
 
     coins.forEach(sprite => {
@@ -159,7 +160,7 @@ function create ()
     takenDamageText.setScrollFactor(0);
 
     // enemies
-    var anim1 = map.createFromObjects('Enemies', 'anim1', { key: 'tile_castle_sprite', frame: 5 });
+    var anim1 = map.createFromObjects('Enemies', 'babe', { key: 'tile_castle_sprite', frame: 5 });
     
     anim1.forEach(anim1 => {
         const newEnemy = this.physics.add.sprite(anim1.x, anim1.y, 'baba');
