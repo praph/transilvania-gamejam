@@ -178,8 +178,6 @@ function update ()
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
-    enemy.anims.play('baba-walk', true);
-    
     usturoi.x ++;
     if(enemy.x > player.x + 50) {
         enemySpeed = -60;
