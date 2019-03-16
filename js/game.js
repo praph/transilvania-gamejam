@@ -42,10 +42,20 @@ function preload ()
 }
 
 function create ()
-{
-    this.add.image(400, 300, "background-1");
-    this.add.image(400, 300, "background-2");
-    this.add.image(400, 300, "background-3");
+{   
+    // Background
+    this.background1 = this.add.tileSprite(400, 300, 1600, 600, 'background-1');
+    // this.background1.setScale(heightRatio);
+
+    this.background2 = this.add.tileSprite(400, 300, 1600, 600, 'background-2');
+    // this.background2.setScale(heightRatio);
+    
+    this.background3 = this.add.tileSprite(400, 300, 1600, 600, 'background-3');
+    // this.background3.setScale(heightRatio);
+
+
+
+
     const map = this.make.tilemap({key:"map"})
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -111,6 +121,16 @@ function create ()
 
 function update ()
 {
+    this.speed = {
+        background1: 3,
+        background2: 4,
+        background3: 5,
+    }
+    // Background paralax
+    // this.background1.tilePositionX += this.speed.background1;
+    // this.background2.tilePositionX += this.speed.background2;
+    // this.background3.tilePositionX += this.speed.background3;
+
     if (gameOver)
     {
         return;
