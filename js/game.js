@@ -5,7 +5,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 500 },
             debug: false
         }
     },
@@ -183,7 +183,7 @@ function update ()
 
     if (cursors.up.isDown && player.body.onFloor())
     {
-        player.setVelocityY(-330);
+        player.setVelocityY(-350);
     }
 
     if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
