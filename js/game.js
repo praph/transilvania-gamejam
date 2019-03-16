@@ -23,6 +23,7 @@ var enemySpeed;
 var usturoi;
 var bullet;
 var platforms;
+var lady;
 var cursors;
 var gameOver = false;
 var night = false;
@@ -38,6 +39,7 @@ function preload ()
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
 
     this.load.spritesheet('monk', 'assets/monk.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('lady', 'assets/lady.png', { frameWidth: 32, frameHeight: 48 });
 
     this.load.image("usturoi", "assets/usturoi.png");
 
@@ -93,6 +95,7 @@ function create ()
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
+    lady = this.physics.add.sprite(600, 450, 'lady');
 
 
     monk = this.physics.add.sprite(600, 450, 'monk');
