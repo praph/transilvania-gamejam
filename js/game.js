@@ -22,10 +22,11 @@ var stars;
 var bombs;
 var platforms;
 var cursors;
-var score = 0;
 var gameOver = false;
-var scoreText;
 var night = false;
+var nightModeText;
+var takenDamage = false;
+var takenDamageText;
 
 var game = new Phaser.Game(config);
 
@@ -54,8 +55,9 @@ function create ()
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
-    const backgroundLayer = map.createDynamicLayer("Background", this.tileset, 0, 0);
-    var coins = map.createFromObjects('Objects', '1', { key: 'tile_castle_sprite', frame: 5 });
+    const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
+    const background2Layer = map.createDynamicLayer("Background2", this.tileset_grey, 0, 0);
+    var coins = map.createFromObjects('Objects', 'shadow', { key: 'tile_castle_sprite', frame: 5 });
     var coinsGroup = this.physics.add.group();
 
     coins.forEach(sprite => {
@@ -63,6 +65,8 @@ function create ()
     })
     coinsGroup.children.entries.forEach(sprite => {
         sprite.body.setAllowGravity(false);
+        sprite.setAlpha(0);
+        // sprite.alpha
     })
 
     // the player will collide with this layer
@@ -122,7 +126,8 @@ function create ()
     cursors = this.input.keyboard.createCursorKeys();
 
     //  The score
-    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+    nightModeText = this.add.text(16, 16, night ? 'night mode' : 'not night');
+    nightModeText.setScrollFactor(0);
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, groundLayer);
@@ -135,13 +140,22 @@ function create ()
     this.buttons.nightMode = this.input.keyboard.addKey('n');  // Get key object
 
     this.physics.add.overlap(player, coinsGroup, oFunctie);
+
+    // night damage
+    takenDamageText = this.add.text(16, 32, takenDamage ? 'la soare!!!' : 'la umbra');
+    takenDamageText.setScrollFactor(0);
 }
 function oFunctie(sprite, health){
-    console.log(123);
+    // console.log(123);
+    takenDamage = false;
 }
 
 function update ()
 {
+    // debugger;
+    takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
+    takenDamage = true;
+
     enemy.anims.play('baba-walk', true);
     
     this.speed = {
