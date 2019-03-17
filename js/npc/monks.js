@@ -83,6 +83,11 @@ class Monks{
           }
         })
     }
+    
+    destroyBullet(bullet){
+        bullet.destroy();
+    }
+
     hitPlayer(player, enemy)
     {
         enemy.destroy();
