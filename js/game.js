@@ -37,6 +37,7 @@ var fpsText;
 
 // classes
 var babe;
+var monks;
 var parallaxBackground;
 
 // enemies
@@ -53,33 +54,33 @@ function preload ()
 {
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
-
     this.load.spritesheet('monk', 'assets/monk.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('lady', 'assets/lady.png', { frameWidth: 24, frameHeight: 48 });
-
     this.load.spritesheet('pope', 'assets/pope.png', { frameWidth: 73, frameHeight: 68 });
+    this.load.spritesheet('tile_castle_sprite', 'assets/map/tile_castle.png', { frameWidth: 32, frameHeight: 32 });
 
     this.load.image("usturoi", "assets/usturoi.png");
-    
     this.load.image("potion", "assets/potion.png");
     this.load.image("cross", "assets/cross.png");
-
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
-    this.load.tilemapTiledJSON("map", "assets/map/map800.json");
     this.load.image("background-1", "assets/background/background-1.png");
     this.load.image("background-2", "assets/background/background-2.png");
     this.load.image("background-3", "assets/background/background-3.png");
 
-    this.load.spritesheet('tile_castle_sprite', 'assets/map/tile_castle.png', { frameWidth: 32, frameHeight: 32 });
+    this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 }
 
 function create ()
 {
+    // create map
     const map = this.make.tilemap({key:"map"})
 
+    // init classes
     babe = new Babe(this, map);
+    monks = new Monks(this, map);
     parallaxBackground = new ParallaxBackground(this, map);
+    // create animations
     const animations = new Animations(this);
     
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
@@ -163,6 +164,7 @@ function create ()
     takenDamageText.setScrollFactor(0);
 
     babe.create(this, map, player);
+    monks.create(this, map, player);
 
     fpsText = this.add.text(16, 48, 'fps');
     fpsText.setScrollFactor(0);

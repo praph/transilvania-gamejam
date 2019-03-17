@@ -27,19 +27,6 @@ class Babe{
         })
 
         // other npc characters
-        var monks = this.map.createFromObjects('Enemies', 'monks', { key: 'tile_castle_sprite', frame: 5 });
-    
-        monks.forEach(anim1 => {
-            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'monk');
-            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
-            this.enemies1.push(newEnemy);
-            
-            anim1.destroy();
-    
-            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
-    
-            // this.shoot(newEnemy, Phaser.physics);
-        })
         var lady = this.map.createFromObjects('Mina', 'lady', { key: 'tile_castle_sprite', frame: 5 });
     
         lady.forEach(anim1 => {
@@ -99,13 +86,6 @@ class Babe{
             usturoi.body.velocity.x = 500;
         }
     
-        pope.anims.play('pope', true);
-        lady.anims.play('lady-left', true);
-        // monk.anims.play('monk-right', true);
-        // monk.anims.play('monk-left', true);
-        // monk.anims.play('monk-pow-left', true);
-        monk.anims.play('monk-pow-right', true);
-        usturoi.x ++;
         if(enemy.x > player.x + 50) {
             enemySpeed = -60;
             enemy.anims.play('baba-left', true);
