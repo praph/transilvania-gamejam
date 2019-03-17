@@ -136,10 +136,10 @@ function create ()
 
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
-    enemy = this.physics.add.sprite(400, 450, 'baba');
-    lady = this.physics.add.sprite(200, 450, 'lady');
-    pope = this.physics.add.sprite(300, 450, 'pope');
-    monk = this.physics.add.sprite(600, 450, 'monk');
+    enemy = this.physics.add.sprite(-10, 25, 'baba');
+    lady = this.physics.add.sprite(-10, 45, 'lady');
+    pope = this.physics.add.sprite(-10, 55, 'pope');
+    monk = this.physics.add.sprite(-10, 65, 'monk');
 
 
     // init classes
@@ -153,9 +153,9 @@ function create ()
     // Parallax background
     parallaxBackground.create();
 
-    potion = this.physics.add.sprite(800, 350, 'potion');
+    potion = this.physics.add.sprite(-10, 15, 'potion');
 
-    cross = this.physics.add.sprite(850, 350, 'cross');
+    cross = this.physics.add.sprite(-10, 35, 'cross');
 
 
     //  Player physics properties. Give the little guy a slight bounce.
