@@ -5,6 +5,11 @@ class Babe{
         this.player = player;
 
         this.enemies = [];
+        this.enemies1 = [];
+        this.enemies2 = [];
+        this.enemies3 = [];
+        this.enemies4 = [];
+        this.enemies5 = [];
     }
     create(){
         var anim1 = this.map.createFromObjects('Enemies', 'babe', { key: 'tile_castle_sprite', frame: 5 });
@@ -19,6 +24,60 @@ class Babe{
             this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
     
             this.shoot(newEnemy, Phaser.physics);
+        })
+
+        // other npc characters
+        var monks = this.map.createFromObjects('Enemies', 'monks', { key: 'tile_castle_sprite', frame: 5 });
+    
+        monks.forEach(anim1 => {
+            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'monk');
+            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
+            this.enemies1.push(newEnemy);
+            
+            anim1.destroy();
+    
+            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+    
+            // this.shoot(newEnemy, Phaser.physics);
+        })
+        var lady = this.map.createFromObjects('Mina', 'lady', { key: 'tile_castle_sprite', frame: 5 });
+    
+        lady.forEach(anim1 => {
+            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'lady');
+            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
+            this.enemies2.push(newEnemy);
+            
+            anim1.destroy();
+    
+            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+    
+            // this.shoot(newEnemy, Phaser.physics);
+        })
+        var boss = this.map.createFromObjects('Enemies', 'boss', { key: 'tile_castle_sprite', frame: 5 });
+    
+        boss.forEach(anim1 => {
+            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'pope');
+            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
+            this.enemies3.push(newEnemy);
+            
+            anim1.destroy();
+    
+            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+    
+            // this.shoot(newEnemy, Phaser.physics);
+        })
+        var potion = this.map.createFromObjects('Potion', 'night', { key: 'tile_castle_sprite', frame: 5 });
+    
+        potion.forEach(anim1 => {
+            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'potion');
+            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
+            this.enemies4.push(newEnemy);
+            
+            anim1.destroy();
+    
+            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+    
+            // this.shoot(newEnemy, Phaser.physics);
         })
     }
     update(){

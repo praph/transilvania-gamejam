@@ -25228,6 +25228,76 @@
                  "width":32,
                  "x":24544,
                  "y":256
+                }, 
+                {
+                 "gid":263,
+                 "height":32,
+                 "id":2309,
+                 "name":"monks",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":512,
+                 "y":384
+                }, 
+                {
+                 "gid":263,
+                 "height":32,
+                 "id":2310,
+                 "name":"boss",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":384,
+                 "y":192
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"Mina",
+         "objects":[
+                {
+                 "gid":263,
+                 "height":32,
+                 "id":2312,
+                 "name":"lady",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":544,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":11,
+         "name":"Potion",
+         "objects":[
+                {
+                 "gid":263,
+                 "height":32,
+                 "id":2313,
+                 "name":"night",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":672,
+                 "y":96
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -25235,8 +25305,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":2309,
+ "nextlayerid":12,
+ "nextobjectid":2314,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.3",
