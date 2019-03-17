@@ -82,6 +82,7 @@ function preload ()
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
     this.load.audio('dracula', 'assets/dracula.mp3');
+    this.load.audio('wolf', 'assets/Werewolf SOUND EFFECT.mp3');
 }
 
 function create ()
@@ -91,6 +92,8 @@ function create ()
 
     var music = this.sound.add('dracula', 'musicConfig');
     music.play();
+    var wolf = this.sound.add('wolf', 'musicConfig');
+    wolf.play();
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
