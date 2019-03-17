@@ -62,10 +62,9 @@ class Dracula{
             this.night = true;
         }
             
-        console.log('start night ' + time);
-
         setTimeout(() => {
             time--;
+
             this.startNight(time);
         }, 1000)
 
