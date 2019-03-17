@@ -5,6 +5,7 @@ class Monks{
         this.player = player;
 
         this.enemies = [];
+        this.crosses = [];
     }
     create(){
         // other npc characters
@@ -39,6 +40,7 @@ class Monks{
                 cross.body.velocity.x = 250;
             }
 
+            this.crosses.push(cross);
             this.Phaser.physics.add.collider(cross, this.Phaser.groundLayer, this.destroyBullet, null, Phaser);
         }
 
@@ -72,6 +74,13 @@ class Monks{
                 enemy.anims.play('monk-right', true);
             }
             enemy.setVelocityX(enemySpeed);
+        });
+        this.crosses.forEach((cross, index) => {
+          if(cross.x > player.x) {
+              cross.angle += 5;
+          } else {
+              cross.angle -= 5;
+          }
         })
     }
     hitPlayer(player, enemy)
