@@ -75,9 +75,9 @@ function preload ()
     this.load.image("cross", "assets/cross.png");
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
-    this.load.image("background-1", "assets/background/background-1.png");
-    this.load.image("background-2", "assets/background/background-2.png");
-    this.load.image("background-3", "assets/background/background-3.png");
+    this.load.image("background", "assets/background/background.png");
+    // this.load.image("background-2", "assets/background/background-2.png");
+    // this.load.image("background-3", "assets/background/background-3.png");
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
