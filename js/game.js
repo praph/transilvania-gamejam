@@ -196,6 +196,10 @@ function create ()
     babe.create(this, map, player);
     monks.create(this, map, player);
 
+    const waterLayer = map.createStaticLayer("apa", this.tileset, 0, 0);
+    waterLayer.setCollisionByExclusion([-1]);
+    this.physics.add.collider(player, waterLayer);
+
     fpsText = this.add.text(16, 79, 'fps');
     fpsText.setScrollFactor(0);
 
