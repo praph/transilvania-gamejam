@@ -67,9 +67,6 @@ class Babe{
             // this.shoot(newEnemy, Phaser.physics);
         })
     }
-    update(){
-
-    }
     cleanUpEnemies(){
         this.enemies.forEach((enemy, index) => {
             if(!enemy.active)
@@ -85,21 +82,12 @@ class Babe{
         } else {
             usturoi.body.velocity.x = 500;
         }
-    
-        if(enemy.x > player.x + 50) {
-            enemySpeed = -60;
-            enemy.anims.play('baba-left', true);
-        } else if(enemy.x < player.x - 50){
-            enemy.anims.play('baba-right', true);
-            enemySpeed = 60;
-        }
+
+        bullets.push(usturoi);
     
         setTimeout(() => {
             if(!enemy.active)
-                return;
-    
-            bullets.push(usturoi);
-            this.shoot(enemy, this.Phaser.physics);
+                this.shoot(enemy, this.Phaser.physics);
         }, Phaser.Math.FloatBetween(1, 10) * 1000)
     }
     animate(){

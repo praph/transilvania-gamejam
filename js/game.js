@@ -185,6 +185,7 @@ function update ()
     fpsText.setText('fps: ' + game.loop.actualFps);
 
     babe.animate();
+    monks.animate();
 
     if (gameOver)
     {
