@@ -42,12 +42,19 @@ class Monks{
 
             this.crosses.push(cross);
             this.Phaser.physics.add.collider(cross, this.Phaser.groundLayer, this.destroyBullet, null, Phaser);
+            this.Phaser.physics.add.collider(cross, this.player, this.shootPlayer, null, Phaser);
         }
 
         setTimeout(() => {
             if(enemy.active)
                 this.shoot(enemy, this.Phaser.physics);
         }, Phaser.Math.FloatBetween(1, 4) * 1000)
+    }
+
+    shootPlayer(bullet){
+        bullet.destroy();
+
+        dracula.takeDamage()
     }
 
     /**

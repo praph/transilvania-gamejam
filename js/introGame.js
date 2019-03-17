@@ -9,11 +9,10 @@ var config = {
             debug: false
         }
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    },
+    scene: [
+        SceneIntro,
+        SceneMainMenu
+    ],
     input: {
         gamepad: true,  // add to enable gamepad input
         queue: true
@@ -69,7 +68,7 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 48, frameHeight: 60 });
+    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('baba', 'assets/baba.png', { frameWidth: 28, frameHeight: 39 });
     this.load.spritesheet('monk', 'assets/monk.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('lady', 'assets/lady.png', { frameWidth: 24, frameHeight: 48 });
@@ -93,7 +92,6 @@ function preload ()
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
     this.load.audio('dracula', 'assets/dracula.mp3');
-    this.load.audio('wolf', 'assets/Werewolf SOUND EFFECT.mp3');
 }
 
 function create ()
@@ -105,8 +103,6 @@ function create ()
 
     var music = this.sound.add('dracula', 'musicConfig');
     music.play();
-    var wolf = this.sound.add('wolf', 'musicConfig');
-    wolf.play();
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
@@ -139,10 +135,10 @@ function create ()
 
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
-    enemy = this.physics.add.sprite(-10, 25, 'baba');
-    lady = this.physics.add.sprite(-10, 45, 'lady');
-    pope = this.physics.add.sprite(-10, 55, 'pope');
-    monk = this.physics.add.sprite(-10, 65, 'monk');
+    enemy = this.physics.add.sprite(400, 450, 'baba');
+    lady = this.physics.add.sprite(200, 450, 'lady');
+    pope = this.physics.add.sprite(300, 450, 'pope');
+    monk = this.physics.add.sprite(600, 450, 'monk');
 
 
     // init classes
@@ -156,9 +152,9 @@ function create ()
     // Parallax background
     parallaxBackground.create();
 
-    potion = this.physics.add.sprite(-10, 15, 'potion');
+    potion = this.physics.add.sprite(800, 350, 'potion');
 
-    cross = this.physics.add.sprite(-10, 35, 'cross');
+    cross = this.physics.add.sprite(850, 350, 'cross');
 
 
     //  Player physics properties. Give the little guy a slight bounce.

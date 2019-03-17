@@ -3,7 +3,7 @@ class Dracula{
         this.Phaser = Phaser;
         this.map = map;
         
-        this.lifes = 3;
+        this.lifes = 300;
         this.sunTolerance = 1000;
         this.generatePotions();
 
@@ -62,10 +62,9 @@ class Dracula{
             this.night = true;
         }
             
-        console.log('start night ' + time);
-
         setTimeout(() => {
             time--;
+
             this.startNight(time);
         }, 1000)
 
@@ -79,10 +78,28 @@ class Dracula{
         return this.sunTolerance / 10;
     }
     decreaseTolerance(){
-        this.sunTolerance = this.sunTolerance - 3;
+        if(this.sunTolerance < 1){
+            this.sunTolerance = 1000;
+            this.takeDamage()
+        } else {
+            this.sunTolerance = this.sunTolerance - 3;
+        }
     }
     increaseTolerance(){
         if(this.sunTolerance < 1000)
            this.sunTolerance = this.sunTolerance + 9;
+    }
+
+    /**
+     * take damage
+     */
+    takeDamage(){
+        if(this.lifes > 1)
+            this.lifes--;
+        else
+            this.gameOver();
+    }
+    gameOver(){
+        alert('cam asta');
     }
 }
