@@ -33,10 +33,17 @@ var takenDamage = false;
 var takenDamageText;
 var fpsText;
 
+// classes
+var babe;
+var parallaxBackground;
+
 // enemies
 var enemyGroup;
 var enemies = []; // arr
 var bullets = []; // arr
+
+// layers
+var groundLayer;
 
 var game = new Phaser.Game(config);
 
@@ -63,15 +70,21 @@ function preload ()
 }
 
 function create ()
-{ 
+{
     const map = this.make.tilemap({key:"map"})
+
+    babe = new Babe(this, map);
+    parallaxBackground = new ParallaxBackground(this, map);
+    const animations = new Animations(this);
+    
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
     this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
     const backgroundCastleLayer = map.createDynamicLayer("Castel", this.tileset_grey, 0, 0);
-    const groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
+    groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
+    this.groundLayer = groundLayer;
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
     // const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
     const backgroundUsiLayer = map.createDynamicLayer("Usi", this.tileset_grey, 0, 0);
@@ -95,105 +108,21 @@ function create ()
     this.physics.world.bounds.height = groundLayer.height;
 
     // Parallax background
+    parallaxBackground.create();
 
-    this.background1 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-1').setDepth(-5);
-
-    this.background2 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-2').setDepth(-5);
-      
-    this.background3 = this.add.tileSprite(400, 300, map.widthInPixels*2, 600, 'background-3').setDepth(-5);
-    
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
     lady = this.physics.add.sprite(200, 450, 'lady');
-
     pope = this.physics.add.sprite(300, 450, 'pope');
-
     monk = this.physics.add.sprite(600, 450, 'monk');
 
 
-    usturoi =  this.add.image(enemy.x, enemy.y, "usturoi");
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
-    //pope anim
-    this.anims.create({
-        key: 'pope',
-        frames: this.anims.generateFrameNumbers('pope', { start: 0, end: 15 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    //lady anim
-    this.anims.create({
-        key: 'lady-left',
-        frames: this.anims.generateFrameNumbers('lady', { start: 0, end: 9 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    // monk animation
-    this.anims.create({
-        key: 'monk-left',
-        frames: this.anims.generateFrameNumbers('monk', { start: 0, end: 5 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'monk-right',
-        frames: this.anims.generateFrameNumbers('monk', { start: 6, end: 11 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'monk-pow-left',
-        frames: this.anims.generateFrameNumbers('monk', { start: 12, end: 17 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'monk-pow-right',
-        frames: this.anims.generateFrameNumbers('monk', { start: 18, end: 24 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    // baba animation
-    this.anims.create({
-        key: 'baba-left',
-        frames: this.anims.generateFrameNumbers('baba', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'baba-right',
-        frames: this.anims.generateFrameNumbers('baba', { start: 4, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    // player anims
-    this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -222,20 +151,7 @@ function create ()
     takenDamageText = this.add.text(16, 32, takenDamage ? 'la soare!!!' : 'la umbra');
     takenDamageText.setScrollFactor(0);
 
-    // enemies
-    var anim1 = map.createFromObjects('Enemies', 'babe', { key: 'tile_castle_sprite', frame: 5 });
-    
-    anim1.forEach(anim1 => {
-        const newEnemy = this.physics.add.sprite(anim1.x, anim1.y, 'baba');
-        this.physics.add.collider(newEnemy, groundLayer);
-        enemies.push(newEnemy);
-        
-        anim1.destroy();
-
-        this.physics.add.collider(player, newEnemy, hitPlayer, null, this);
-
-        shoot(newEnemy, this.physics);
-    })
+    babe.create(this, map, player);
 
     fpsText = this.add.text(16, 48, 'fps');
     fpsText.setScrollFactor(0);
@@ -246,84 +162,16 @@ function oFunctie(sprite, health){
     takenDamage = false;
 }
 
-function hitPlayer (player, enemy)
-{
-    enemy.destroy();
-}
-
-function shoot(enemy, physics){
-    const usturoi = physics.add.sprite(enemy.x, enemy.y, "usturoi");
-    usturoi.body.setAllowGravity(false);
-
-    if(enemy.x > player.x) {
-        usturoi.body.velocity.x = -500;
-    } else {
-        usturoi.body.velocity.x = 500;
-    }
-
-    pope.anims.play('pope', true);
-    lady.anims.play('lady-left', true);
-    // monk.anims.play('monk-right', true);
-    // monk.anims.play('monk-left', true);
-    // monk.anims.play('monk-pow-left', true);
-    monk.anims.play('monk-pow-right', true);
-    usturoi.x ++;
-    if(enemy.x > player.x + 50) {
-        enemySpeed = -60;
-        enemy.anims.play('baba-left', true);
-    } else if(enemy.x < player.x - 50){
-        enemy.anims.play('baba-right', true);
-        enemySpeed = 60;
-    }
-
-    setTimeout(() => {
-        if(!enemy.active)
-            return;
-
-        bullets.push(usturoi);
-        shoot(enemy, physics);
-    }, Phaser.Math.FloatBetween(1, 10) * 1000)
-}
-
-function animateEnemies(){
-    enemies.forEach((enemy, index) => {
-        if(!enemy.active)
-            return;
-        
-        if(enemy.x > player.x) {
-            enemySpeed = -60;
-            enemy.anims.play('baba-left', true);
-        } else {
-            enemySpeed = 60;
-            enemy.anims.play('baba-right', true);
-        }
-        enemy.setVelocityX(enemySpeed);
-    })
-}
-
-function cleanUpEnemies(){
-    enemies.forEach((enemy, index) => {
-        if(!enemy.active)
-            enemies.splice(index, 1);
-    })
-}
-
 function update ()
 {
-    cleanUpEnemies();
+    babe.cleanUpEnemies();
     
     takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
     takenDamage = true;
 
     fpsText.setText('fps: ' + game.loop.actualFps);
 
-    animateEnemies();
-
-    this.speed = {
-        background1: 1.6,
-        background2: 1.3,
-        background3: 0.9,
-    }
+    babe.animate();
 
     if (gameOver)
     {
@@ -336,9 +184,7 @@ function update ()
 
         player.anims.play('left', true);
 
-        this.background1.tilePositionX -= this.speed.background1;
-        this.background2.tilePositionX -= this.speed.background2;
-        this.background3.tilePositionX -= this.speed.background3;
+        parallaxBackground.tileLeft();
     }
     else if (cursors.right.isDown)
     {
@@ -346,10 +192,7 @@ function update ()
 
         player.anims.play('right', true);
         
-        this.background1.tilePositionX += this.speed.background1;
-        this.background2.tilePositionX += this.speed.background2;
-        this.background3.tilePositionX += this.speed.background3;
-
+        parallaxBackground.tileRight();
     }
     else
     {
