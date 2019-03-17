@@ -79,9 +79,9 @@ class Babe{
             usturoi.body.setAllowGravity(false);
         
             if(enemy.x > player.x) {
-                usturoi.body.velocity.x = -500;
+                usturoi.body.velocity.x = -400;
             } else {
-                usturoi.body.velocity.x = 500;
+                usturoi.body.velocity.x = 400;
             }
     
             bullets.push(usturoi);
@@ -90,7 +90,7 @@ class Babe{
         setTimeout(() => {
             if(enemy.active)
                 this.shoot(enemy, this.Phaser.physics);
-        }, Phaser.Math.FloatBetween(1, 3) * 1000)
+        }, Phaser.Math.FloatBetween(4, 7) * 1000)
     }
     ifOnCamera(enemyX, enemyY){
         if(player.body.x - enemyX < 400 && player.body.x - enemyX > -400)
@@ -104,13 +104,13 @@ class Babe{
                 return;
             
             if(enemy.x > player.x) {
-                // enemySpeed = -60;
+                enemySpeed = -60;
                 enemy.anims.play('baba-left', true);
             } else {
-                // enemySpeed = 60;
+                enemySpeed = 60;
                 enemy.anims.play('baba-right', true);
             }
-            // enemy.setVelocityX(enemySpeed);
+            enemy.setVelocityX(enemySpeed);
         })
     }
     hitPlayer(player, enemy)
