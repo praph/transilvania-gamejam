@@ -97,6 +97,8 @@ function create ()
     // create map
     const map = this.make.tilemap({key:"map"})
 
+    this.cameras.main.backgroundColor.setTo(255,255,255);
+
     var music = this.sound.add('dracula', 'musicConfig');
     music.play();
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in

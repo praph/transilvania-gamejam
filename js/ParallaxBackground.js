@@ -28,7 +28,7 @@ class ParallaxBackground{
         // this.Phaser.background3.tilePositionX += this.speed.background3;
     }
     night(){
-        this.Phaser.background.setAlpha(.5)
+        this.Phaser.background.setAlpha(.75)
     }
     day(){
         this.Phaser.background.setAlpha(1)
