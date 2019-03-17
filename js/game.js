@@ -83,7 +83,7 @@ function create ()
     // create map
     const map = this.make.tilemap({key:"map"})
 
-    
+    this.cameras.main.backgroundColor.setTo(153,207,255);    
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
@@ -250,8 +250,10 @@ function update ()
     if(dracula.getNight()){
         var texture = this.sys.textures.get('tiles');
         this.tileset_grey.setImage(texture);
+        parallaxBackground.night();
     }else{
         var texture = this.sys.textures.get('tiles_grey');
         this.tileset_grey.setImage(texture);
+        parallaxBackground.day();
     }
 }
