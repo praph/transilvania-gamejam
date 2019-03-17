@@ -11,6 +11,10 @@ class Babe{
         this.enemies4 = [];
         this.enemies5 = [];
     }
+    
+    /**
+     * Create the sprites from the object
+     */
     create(){
         var anim1 = this.map.createFromObjects('Enemies', 'babe', { key: 'tile_castle_sprite', frame: 5 });
     
@@ -67,37 +71,62 @@ class Babe{
             // this.shoot(newEnemy, Phaser.physics);
         })
     }
+
+    /**
+     * Clean up our awesome array
+     */
     cleanUpEnemies(){
         this.enemies.forEach((enemy, index) => {
             if(!enemy.active)
                 this.enemies.splice(index, 1);
         })
     }
+
+    // 
+    destroyBullet(bullet){
+        bullet.destroy();
+    }
+    
+    /**
+     * create a missile and send it into the wild
+     * collision detection with ground layer
+     * call it again if enemy is not destroyed yet
+     * @param {*} enemy 
+     */
     shoot(enemy){
         if(this.ifOnCamera(enemy.x, enemy.y)){
             const usturoi = this.Phaser.physics.add.sprite(enemy.x, enemy.y, "usturoi");
             usturoi.body.setAllowGravity(false);
         
             if(enemy.x > player.x) {
-                usturoi.body.velocity.x = -400;
+                usturoi.body.velocity.x = -250;
             } else {
-                usturoi.body.velocity.x = 400;
+                usturoi.body.velocity.x = 250;
             }
-    
-            bullets.push(usturoi);
+            
+            this.Phaser.physics.add.collider(usturoi, this.Phaser.groundLayer, this.destroyBullet, null, Phaser);
         }
     
         setTimeout(() => {
             if(enemy.active)
                 this.shoot(enemy, this.Phaser.physics);
-        }, Phaser.Math.FloatBetween(4, 7) * 1000)
+        }, Phaser.Math.FloatBetween(1, 4) * 1000)
     }
-    ifOnCamera(enemyX, enemyY){
+    
+    /**
+     * calculate if the enemy is on camera
+     * @param {*} enemyX 
+     */
+    ifOnCamera(enemyX){
         if(player.body.x - enemyX < 400 && player.body.x - enemyX > -400)
             return 1;
         
         return 0;
     }
+
+    /**
+     * animate enemy based on player position ( left / right )
+     */
     animate(){
         this.enemies.forEach((enemy, index) => {
             if(!enemy.active)
@@ -113,9 +142,14 @@ class Babe{
             enemy.setVelocityX(enemySpeed);
         })
     }
+
+    /**
+     * collision between player and enemy
+     * @param {*} player 
+     * @param {*} enemy 
+     */
     hitPlayer(player, enemy)
     {
         enemy.destroy();
     }
-
 }
