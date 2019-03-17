@@ -230,12 +230,9 @@ function update ()
     // update texts
     takenDamageText.setText('tolerance: ' + dracula.getTolerance());
     lifesModeText.setText('lifes: ' + dracula.getLifes());
-<<<<<<< HEAD
-=======
     fpsText.setText('fps: ' + game.loop.actualFps);
     gui.updateHealthBar(dracula.getLifes());
     gui.updateToleranceBar(dracula.getTolerance());
->>>>>>> night-vision-bar
 
     babe.animate();
     monks.animate();
@@ -282,18 +279,10 @@ function update ()
     if(dracula.getNight()){
         var texture = this.sys.textures.get('tiles');
         this.tileset_grey.setImage(texture);
-<<<<<<< HEAD
         parallaxBackground.day();
     }else{
         var texture = this.sys.textures.get('tiles_grey');
         this.tileset_grey.setImage(texture);
         parallaxBackground.night();
-=======
-        parallaxBackground.night();
-    }else{
-        var texture = this.sys.textures.get('tiles_grey');
-        this.tileset_grey.setImage(texture);
-        parallaxBackground.day();
->>>>>>> night-vision-bar
     }
 }
