@@ -30,8 +30,8 @@ var lady;
 var cursors;
 var gameOver = false;
 var night = false;
-var nightModeText;
 var takenDamage = false;
+var lifesModeText;
 var takenDamageText;
 var fpsText;
 
@@ -39,6 +39,7 @@ var fpsText;
 var babe;
 var monks;
 var parallaxBackground;
+var dracula;
 
 // enemies
 var enemyGroup;
@@ -121,6 +122,7 @@ function create ()
     parallaxBackground = new ParallaxBackground(this, map);
     // create animations
     const animations = new Animations(this);
+    dracula = new Dracula(this, map);
     
     // Parallax background
     parallaxBackground.create();
@@ -140,8 +142,8 @@ function create ()
     cursors = this.input.keyboard.createCursorKeys();
 
     //  The score
-    nightModeText = this.add.text(16, 16, night ? 'night mode' : 'not night');
-    nightModeText.setScrollFactor(0);
+    lifesModeText = this.add.text(16, 16, 'lifes');
+    lifesModeText.setScrollFactor(0);
 
     // enemy interactions
     //  Collide the player and the stars with the platforms
@@ -180,10 +182,18 @@ function oFunctie(sprite, health){
 function update ()
 {
     babe.cleanUpEnemies();
-    
-    takenDamageText.setText(takenDamage ? 'la soare!!!' : 'la umbra')
+
+    // dracula's tolerance to sun
+    if(takenDamage)
+        dracula.decreaseTolerance()
+    else
+        dracula.increaseTolerance()
+
     takenDamage = true;
 
+    // update texts
+    takenDamageText.setText('tolerance: ' + dracula.getTolerance());
+    lifesModeText.setText('lifes: ' + dracula.getLifes());
     fpsText.setText('fps: ' + game.loop.actualFps);
 
     babe.animate();

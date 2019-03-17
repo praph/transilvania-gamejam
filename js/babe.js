@@ -57,19 +57,7 @@ class Babe{
     
             // this.shoot(newEnemy, Phaser.physics);
         })
-        var potion = this.map.createFromObjects('Potion', 'night', { key: 'tile_castle_sprite', frame: 5 });
-    
-        potion.forEach(anim1 => {
-            const newEnemy = this.Phaser.physics.add.sprite(anim1.x, anim1.y, 'potion');
-            this.Phaser.physics.add.collider(newEnemy, this.Phaser.groundLayer);
-            this.enemies4.push(newEnemy);
-            
-            anim1.destroy();
-    
-            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
-    
-            // this.shoot(newEnemy, Phaser.physics);
-        })
+
     }
 
     /**
