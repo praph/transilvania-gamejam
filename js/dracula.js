@@ -8,6 +8,7 @@ class Dracula{
         this.generatePotions();
 
         this.nightDuration = 5;
+        this.night = false;
 
         // this.startNight = this.startNight.bind(this);
     }
@@ -49,14 +50,20 @@ class Dracula{
     /**
      * start night
      */
+    getNight(){
+        return this.night;
+    }
     startNight(time){
         if(time < 1){
-
+            this.night = false;
+            
             return;
+        }else{
+            this.night = true;
         }
             
         console.log('start night ' + time);
-        
+
         setTimeout(() => {
             time--;
             this.startNight(time);

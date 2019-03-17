@@ -184,7 +184,7 @@ function update ()
     babe.cleanUpEnemies();
 
     // dracula's tolerance to sun
-    if(takenDamage)
+    if(takenDamage && !dracula.getNight())
         dracula.decreaseTolerance()
     else
         dracula.increaseTolerance()
@@ -235,15 +235,11 @@ function update ()
         player.setVelocityY(-370);
     }
 
-    if(Phaser.Input.Keyboard.JustDown(this.buttons.nightMode)){
-        if(night){
-            var texture = this.sys.textures.get('tiles_grey');
-            this.tileset_grey.setImage(texture);
-        }else{
-            var texture = this.sys.textures.get('tiles');
-            this.tileset_grey.setImage(texture);
-        }
-
-        night = !night;
+    if(dracula.getNight()){
+        var texture = this.sys.textures.get('tiles');
+        this.tileset_grey.setImage(texture);
+    }else{
+        var texture = this.sys.textures.get('tiles_grey');
+        this.tileset_grey.setImage(texture);
     }
 }
