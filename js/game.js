@@ -286,8 +286,10 @@ function update ()
     if(dracula.getNight()){
         var texture = this.sys.textures.get('tiles');
         this.tileset_grey.setImage(texture);
+        parallaxBackground.day();
     }else{
         var texture = this.sys.textures.get('tiles_grey');
         this.tileset_grey.setImage(texture);
+        parallaxBackground.night();
     }
 }
