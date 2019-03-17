@@ -76,12 +76,6 @@ function create ()
     // create map
     const map = this.make.tilemap({key:"map"})
 
-    // init classes
-    babe = new Babe(this, map);
-    monks = new Monks(this, map);
-    parallaxBackground = new ParallaxBackground(this, map);
-    // create animations
-    const animations = new Animations(this);
     
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
@@ -113,16 +107,24 @@ function create ()
     this.physics.world.bounds.width = groundLayer.width;
     this.physics.world.bounds.height = groundLayer.height;
 
-    // Parallax background
-    parallaxBackground.create();
-
     // The player and its settings
     player = this.physics.add.sprite(500, 450, 'dude');
     enemy = this.physics.add.sprite(400, 450, 'baba');
     lady = this.physics.add.sprite(200, 450, 'lady');
     pope = this.physics.add.sprite(300, 450, 'pope');
     monk = this.physics.add.sprite(600, 450, 'monk');
+
+
+    // init classes
+    babe = new Babe(this, map, player);
+    monks = new Monks(this, map);
+    parallaxBackground = new ParallaxBackground(this, map);
+    // create animations
+    const animations = new Animations(this);
     
+    // Parallax background
+    parallaxBackground.create();
+
     potion = this.physics.add.sprite(800, 350, 'potion');
 
     cross = this.physics.add.sprite(850, 350, 'cross');
@@ -199,6 +201,9 @@ function update ()
         player.anims.play('left', true);
 
         parallaxBackground.tileLeft();
+
+        // console.log(player.body.x);
+        
     }
     else if (cursors.right.isDown)
     {

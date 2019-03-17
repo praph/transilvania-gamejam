@@ -1,5 +1,5 @@
 class Babe{
-    constructor(Phaser, map){
+    constructor(Phaser, map, player){
         this.Phaser = Phaser;
         this.map = map;
         this.player = player;
@@ -74,21 +74,29 @@ class Babe{
         })
     }
     shoot(enemy){
-        const usturoi = this.Phaser.physics.add.sprite(enemy.x, enemy.y, "usturoi");
-        usturoi.body.setAllowGravity(false);
+        if(this.ifOnCamera(enemy.x, enemy.y)){
+            const usturoi = this.Phaser.physics.add.sprite(enemy.x, enemy.y, "usturoi");
+            usturoi.body.setAllowGravity(false);
+        
+            if(enemy.x > player.x) {
+                usturoi.body.velocity.x = -500;
+            } else {
+                usturoi.body.velocity.x = 500;
+            }
     
-        if(enemy.x > player.x) {
-            usturoi.body.velocity.x = -500;
-        } else {
-            usturoi.body.velocity.x = 500;
+            bullets.push(usturoi);
         }
-
-        bullets.push(usturoi);
     
         setTimeout(() => {
-            if(!enemy.active)
+            if(enemy.active)
                 this.shoot(enemy, this.Phaser.physics);
-        }, Phaser.Math.FloatBetween(1, 10) * 1000)
+        }, Phaser.Math.FloatBetween(1, 3) * 1000)
+    }
+    ifOnCamera(enemyX, enemyY){
+        if(player.body.x - enemyX < 400 && player.body.x - enemyX > -400)
+            return 1;
+        
+        return 0;
     }
     animate(){
         this.enemies.forEach((enemy, index) => {
@@ -96,13 +104,13 @@ class Babe{
                 return;
             
             if(enemy.x > player.x) {
-                enemySpeed = -60;
+                // enemySpeed = -60;
                 enemy.anims.play('baba-left', true);
             } else {
-                enemySpeed = 60;
+                // enemySpeed = 60;
                 enemy.anims.play('baba-right', true);
             }
-            enemy.setVelocityX(enemySpeed);
+            // enemy.setVelocityX(enemySpeed);
         })
     }
     hitPlayer(player, enemy)
