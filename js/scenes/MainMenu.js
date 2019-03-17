@@ -24,7 +24,8 @@ class SceneMainMenu extends Phaser.Scene {
         if (this.input.gamepad.total) {
             var pad = this.input.gamepad.getPad(0);
 
-            
+            if(pad.A)
+                window.location = 'game.html';
         }
     }
   }
