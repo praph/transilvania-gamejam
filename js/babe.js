@@ -60,7 +60,7 @@ class Babe{
                 return;
     
             bullets.push(usturoi);
-            shoot(enemy, physics);
+            this.shoot(enemy, this.Phaser.physics);
         }, Phaser.Math.FloatBetween(1, 10) * 1000)
     }
     animate(){
