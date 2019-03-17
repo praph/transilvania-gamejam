@@ -34,6 +34,7 @@ var player;
 var enemy;
 var monk;
 var potion;
+var red;
 var enemySpeed;
 var cross;
 var usturoi;
@@ -82,7 +83,8 @@ function preload ()
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
     this.load.image("background", "assets/background/background.png");
-
+    
+    this.load.image("bg-red", "assets/blood.png");
     // this.load.image("background-1", "assets/background/background-1.png");
     // this.load.image("background-2", "assets/background/background-2.png");
     // this.load.image("background-3", "assets/background/background-3.png");
@@ -141,7 +143,8 @@ function create ()
     pope = this.physics.add.sprite(-10, 55, 'pope');
     monk = this.physics.add.sprite(-10, 65, 'monk');
 
-
+    
+    
     // init classes
     babe = new Babe(this, map, player);
     monks = new Monks(this, map);
@@ -149,7 +152,9 @@ function create ()
     // create animations
     const animations = new Animations(this);
     dracula = new Dracula(this, map);
-
+    
+    red = this.add.image(400, 300, 'bg-red')
+    red.setDepth(-10);
     // Parallax background
     parallaxBackground.create();
 
@@ -220,6 +225,15 @@ function update ()
     }
     var xAxis = pad ? pad.axes[0].getValue(0) : 0;
     
+    if(takenDamage && !dracula.getNight()) {
+        console.log("DAMAGED!");
+        red.setDepth(10);
+        red.setAlpha(.5);
+        red.setScrollFactor(0);
+    } else {
+        red.setDepth(-10);
+        red.setAlpha(0);
+    }
 
     babe.cleanUpEnemies();
 
