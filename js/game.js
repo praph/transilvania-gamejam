@@ -19,7 +19,9 @@ var config = {
 var player;
 var enemy;
 var monk;
+var potion;
 var enemySpeed;
+var cross;
 var usturoi;
 var bullet;
 var pope;
@@ -58,6 +60,9 @@ function preload ()
     this.load.spritesheet('pope', 'assets/pope.png', { frameWidth: 73, frameHeight: 68 });
 
     this.load.image("usturoi", "assets/usturoi.png");
+    
+    this.load.image("potion", "assets/potion.png");
+    this.load.image("cross", "assets/cross.png");
 
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
@@ -116,6 +121,10 @@ function create ()
     lady = this.physics.add.sprite(200, 450, 'lady');
     pope = this.physics.add.sprite(300, 450, 'pope');
     monk = this.physics.add.sprite(600, 450, 'monk');
+    
+    potion = this.physics.add.sprite(800, 350, 'potion');
+
+    cross = this.physics.add.sprite(850, 350, 'cross');
 
 
     //  Player physics properties. Give the little guy a slight bounce.
@@ -138,6 +147,8 @@ function create ()
     this.physics.add.collider(monk, groundLayer);
     this.physics.add.collider(lady, groundLayer);
     this.physics.add.collider(pope, groundLayer);
+    this.physics.add.collider(potion, groundLayer);
+    this.physics.add.collider(cross, groundLayer);
 
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(player);
