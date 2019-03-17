@@ -48,13 +48,14 @@ var takenDamage = false;
 var lifesModeText;
 var takenDamageText;
 var fpsText;
-var healhBar = [];
+var healthBar = [];
 
 // classes
 var babe;
 var monks;
 var parallaxBackground;
 var dracula;
+var gui;
 
 // enemies
 var enemyGroup;
@@ -86,6 +87,8 @@ function preload ()
     // this.load.image("background-2", "assets/background/background-2.png");
     // this.load.image("background-3", "assets/background/background-3.png");
     this.load.image("health-vampire", "assets/Vampire_icon-icons.com_75033.png");
+    this.load.image("tolerance-inside", "assets/tolerance-inside.png");
+    this.load.image("tolerance-placeholder", "assets/tolerance-placeholder.png");
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
@@ -196,24 +199,9 @@ function create ()
     fpsText = this.add.text(16, 79, 'fps');
     fpsText.setScrollFactor(0);
 
-    var healthBar1 = this.physics.add.sprite(50, 50, 'health-vampire');
-    healthBar1.displayWidth = 50;
-    healthBar1.displayHeight = 50;
-    healthBar1.setScrollFactor(0);
-    healthBar1.body.setAllowGravity(false);
-    healhBar.push(healthBar1);
-    var healthBar2 = this.physics.add.sprite(115, 50, 'health-vampire');
-    healthBar2.displayWidth = 50;
-    healthBar2.displayHeight = 50;
-    healthBar2.setScrollFactor(0);
-    healthBar2.body.setAllowGravity(false);
-    healhBar.push(healthBar2);
-    var healthBar3 = this.physics.add.sprite(180, 50, 'health-vampire');
-    healthBar3.displayWidth = 50;
-    healthBar3.displayHeight = 50;
-    healthBar3.setScrollFactor(0);
-    healthBar3.body.setAllowGravity(false);
-    healhBar.push(healthBar3);
+    gui = new GameGUI(this);
+    healthBar = gui.createHealthBar();
+    toleranceBar = gui.createToleranceBar();
 }
 
 function oFunctie(sprite, health){
@@ -242,6 +230,12 @@ function update ()
     // update texts
     takenDamageText.setText('tolerance: ' + dracula.getTolerance());
     lifesModeText.setText('lifes: ' + dracula.getLifes());
+<<<<<<< HEAD
+=======
+    fpsText.setText('fps: ' + game.loop.actualFps);
+    gui.updateHealthBar(dracula.getLifes());
+    gui.updateToleranceBar(dracula.getTolerance());
+>>>>>>> night-vision-bar
 
     babe.animate();
     monks.animate();
@@ -288,10 +282,18 @@ function update ()
     if(dracula.getNight()){
         var texture = this.sys.textures.get('tiles');
         this.tileset_grey.setImage(texture);
+<<<<<<< HEAD
         parallaxBackground.day();
     }else{
         var texture = this.sys.textures.get('tiles_grey');
         this.tileset_grey.setImage(texture);
         parallaxBackground.night();
+=======
+        parallaxBackground.night();
+    }else{
+        var texture = this.sys.textures.get('tiles_grey');
+        this.tileset_grey.setImage(texture);
+        parallaxBackground.day();
+>>>>>>> night-vision-bar
     }
 }
