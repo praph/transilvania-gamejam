@@ -22,9 +22,6 @@ class Monks{
             this.shoot(newEnemy, Phaser.physics);
         })
     }
-    update(){
-
-    }
     cleanUpEnemies(){
         this.enemies.forEach((enemy, index) => {
             if(!enemy.active)
@@ -41,21 +38,11 @@ class Monks{
             usturoi.body.velocity.x = 500;
         }
 
-        usturoi.x ++;
-        if(enemy.x > player.x + 50) {
-            enemySpeed = -60;
-            enemy.anims.play('baba-left', true);
-        } else if(enemy.x < player.x - 50){
-            enemy.anims.play('baba-right', true);
-            enemySpeed = 60;
-        }
+        bullets.push(usturoi);
     
         setTimeout(() => {
-            if(!enemy.active)
-                return;
-    
-            bullets.push(usturoi);
-            this.shoot(enemy, this.Phaser.physics);
+            if(enemy.active)
+                this.shoot(enemy, this.Phaser.physics);
         }, Phaser.Math.FloatBetween(1, 10) * 1000)
     }
     animate(){
@@ -65,10 +52,10 @@ class Monks{
             
             if(enemy.x > player.x) {
                 enemySpeed = -60;
-                enemy.anims.play('baba-left', true);
+                enemy.anims.play('monk-left', true);
             } else {
                 enemySpeed = 60;
-                enemy.anims.play('baba-right', true);
+                enemy.anims.play('monk-right', true);
             }
             enemy.setVelocityX(enemySpeed);
         })
@@ -77,5 +64,4 @@ class Monks{
     {
         enemy.destroy();
     }
-
 }
