@@ -41,6 +41,7 @@ var babe;
 var monks;
 var parallaxBackground;
 var dracula;
+var gui;
 
 // enemies
 var enemyGroup;
@@ -69,7 +70,10 @@ function preload ()
     this.load.image("background-1", "assets/background/background-1.png");
     this.load.image("background-2", "assets/background/background-2.png");
     this.load.image("background-3", "assets/background/background-3.png");
+    // GUI
     this.load.image("health-vampire", "assets/Vampire_icon-icons.com_75033.png");
+    this.load.image("tolerance-inside", "assets/tolerance-inside.png");
+    this.load.image("tolerance-placeholder", "assets/tolerance-placeholder.png");
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 }
@@ -175,8 +179,9 @@ function create ()
     fpsText = this.add.text(16, 79, 'fps');
     fpsText.setScrollFactor(0);
 
-    let gui = new GameGUI(this);
+    gui = new GameGUI(this);
     healthBar = gui.createHealthBar();
+    toleranceBar = gui.createToleranceBar();
 }
 
 function oFunctie(sprite, health){
@@ -200,6 +205,8 @@ function update ()
     takenDamageText.setText('tolerance: ' + dracula.getTolerance());
     lifesModeText.setText('lifes: ' + dracula.getLifes());
     fpsText.setText('fps: ' + game.loop.actualFps);
+    gui.updateHealthBar(dracula.getLifes());
+    gui.updateToleranceBar(dracula.getTolerance());
 
     babe.animate();
     monks.animate();

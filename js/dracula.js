@@ -79,10 +79,28 @@ class Dracula{
         return this.sunTolerance / 10;
     }
     decreaseTolerance(){
-        this.sunTolerance = this.sunTolerance - 3;
+        if(this.sunTolerance < 1){
+            this.sunTolerance = 1000;
+            this.takeDamage()
+        } else {
+            this.sunTolerance = this.sunTolerance - 3;
+        }
     }
     increaseTolerance(){
         if(this.sunTolerance < 1000)
            this.sunTolerance = this.sunTolerance + 9;
+    }
+
+    /**
+     * take damage
+     */
+    takeDamage(){
+        if(this.lifes > 1)
+            this.lifes--;
+        else
+            this.gameOver();
+    }
+    gameOver(){
+        alert('cam asta');
     }
 }
