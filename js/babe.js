@@ -93,6 +93,7 @@ class Babe{
             }
 
             this.Phaser.physics.add.collider(usturoi, this.Phaser.groundLayer, this.destroyBullet, null, Phaser);
+            this.Phaser.physics.add.collider(usturoi, this.player, this.shootPlayer, null, Phaser);
         }
 
         setTimeout(() => {
@@ -101,6 +102,11 @@ class Babe{
         }, Phaser.Math.FloatBetween(1, 4) * 1000)
     }
 
+    shootPlayer(bullet){
+        bullet.destroy();
+
+        dracula.takeDamage()
+    }
     
     /**
      * calculate if the enemy is on camera

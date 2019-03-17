@@ -3,7 +3,7 @@ class Dracula{
         this.Phaser = Phaser;
         this.map = map;
         
-        this.lifes = 3;
+        this.lifes = 300;
         this.sunTolerance = 1000;
         this.generatePotions();
 
