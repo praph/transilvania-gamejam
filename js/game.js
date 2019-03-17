@@ -97,7 +97,7 @@ function create ()
     // create map
     const map = this.make.tilemap({key:"map"})
 
-    this.cameras.main.backgroundColor.setTo(255,255,255);
+    this.cameras.main.backgroundColor.setTo(153,207,255);
 
     var music = this.sound.add('dracula', 'musicConfig');
     music.play();
