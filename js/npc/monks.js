@@ -97,6 +97,8 @@ class Monks{
 
     hitPlayer(player, enemy)
     {
+        dracula.takeDamage()
+
         enemy.destroy();
     }
 }
