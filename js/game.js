@@ -34,7 +34,7 @@ var takenDamage = false;
 var lifesModeText;
 var takenDamageText;
 var fpsText;
-var healhBar = [];
+var healthBar = [];
 
 // classes
 var babe;
@@ -175,24 +175,8 @@ function create ()
     fpsText = this.add.text(16, 79, 'fps');
     fpsText.setScrollFactor(0);
 
-    var healthBar1 = this.physics.add.sprite(50, 50, 'health-vampire');
-    healthBar1.displayWidth = 50;
-    healthBar1.displayHeight = 50;
-    healthBar1.setScrollFactor(0);
-    healthBar1.body.setAllowGravity(false);
-    healhBar.push(healthBar1);
-    var healthBar2 = this.physics.add.sprite(115, 50, 'health-vampire');
-    healthBar2.displayWidth = 50;
-    healthBar2.displayHeight = 50;
-    healthBar2.setScrollFactor(0);
-    healthBar2.body.setAllowGravity(false);
-    healhBar.push(healthBar2);
-    var healthBar3 = this.physics.add.sprite(180, 50, 'health-vampire');
-    healthBar3.displayWidth = 50;
-    healthBar3.displayHeight = 50;
-    healthBar3.setScrollFactor(0);
-    healthBar3.body.setAllowGravity(false);
-    healhBar.push(healthBar3);
+    let gui = new GameGUI(this);
+    healthBar = gui.createHealthBar();
 }
 
 function oFunctie(sprite, health){
