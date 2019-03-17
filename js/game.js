@@ -13,6 +13,10 @@ var config = {
         preload: preload,
         create: create,
         update: update
+    },
+    input: {
+        gamepad: true,  // add to enable gamepad input
+        queue: true
     }
 };
 
@@ -202,6 +206,12 @@ function oFunctie(sprite, health){
 
 function update ()
 {
+    if (this.input.gamepad.total) {
+        var pad = this.input.gamepad.getPad(0);
+    }
+    var xAxis = pad ? pad.axes[0].getValue(0) : 0;
+    
+
     babe.cleanUpEnemies();
 
     // dracula's tolerance to sun
@@ -215,7 +225,6 @@ function update ()
     // update texts
     takenDamageText.setText('tolerance: ' + dracula.getTolerance());
     lifesModeText.setText('lifes: ' + dracula.getLifes());
-    fpsText.setText('fps: ' + game.loop.actualFps);
 
     babe.animate();
     monks.animate();
@@ -225,7 +234,7 @@ function update ()
         return;
     }
 
-    if (cursors.left.isDown)
+    if (cursors.left.isDown || xAxis < 0)
     {
         player.setVelocityX(-160);
 
@@ -236,7 +245,7 @@ function update ()
         // console.log(player.body.x);
         
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown || xAxis > 0)
     {
         player.setVelocityX(160);
 
@@ -255,6 +264,9 @@ function update ()
     {
         player.setVelocityY(-370);
     }
+    if(pad && pad.A && player.body.onFloor())
+        player.setVelocityY(-370);
+
 
     if(dracula.getNight()){
         var texture = this.sys.textures.get('tiles');
