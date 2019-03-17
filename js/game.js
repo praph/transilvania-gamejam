@@ -221,7 +221,7 @@ function update ()
     }
     var xAxis = pad ? pad.axes[0].getValue(0) : 0;
     
-    if(takenDamage) {
+    if(takenDamage && !dracula.getNight()) {
         console.log("DAMAGED!");
         red.setDepth(10);
         red.setAlpha(.5);
