@@ -20,6 +20,16 @@ var config = {
     }
 };
 
+var musicConfig = {
+    mute: false,
+    volume: 20,
+    rate: 1,
+    detune: 0,
+    seek: 0,
+    loop: true,
+    delay: 0
+}
+
 var player;
 var enemy;
 var monk;
@@ -70,12 +80,16 @@ function preload ()
     this.load.image("cross", "assets/cross.png");
     this.load.image("tiles", "assets/map/tile_castle.png");
     this.load.image("tiles_grey", "assets/map/tile_castle_grey.png");
-    this.load.image("background-1", "assets/background/background-1.png");
-    this.load.image("background-2", "assets/background/background-2.png");
-    this.load.image("background-3", "assets/background/background-3.png");
+    this.load.image("background", "assets/background/background.png");
+
+    // this.load.image("background-1", "assets/background/background-1.png");
+    // this.load.image("background-2", "assets/background/background-2.png");
+    // this.load.image("background-3", "assets/background/background-3.png");
     this.load.image("health-vampire", "assets/Vampire_icon-icons.com_75033.png");
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
+
+    this.load.audio('dracula', 'assets/dracula.mp3');
 }
 
 function create ()
@@ -83,7 +97,8 @@ function create ()
     // create map
     const map = this.make.tilemap({key:"map"})
 
-    
+    var music = this.sound.add('dracula', 'musicConfig');
+    music.play();
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
@@ -129,7 +144,7 @@ function create ()
     // create animations
     const animations = new Animations(this);
     dracula = new Dracula(this, map);
-    
+
     // Parallax background
     parallaxBackground.create();
 
@@ -243,14 +258,14 @@ function update ()
         parallaxBackground.tileLeft();
 
         // console.log(player.body.x);
-        
+
     }
     else if (cursors.right.isDown || xAxis > 0)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
-        
+
         parallaxBackground.tileRight();
     }
     else
