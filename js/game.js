@@ -217,7 +217,6 @@ function create ()
 }
 
 function oFunctie(sprite, health){
-    // console.log(123);
     takenDamage = false;
 }
 
@@ -229,7 +228,6 @@ function update ()
     var xAxis = pad ? pad.axes[0].getValue(0) : 0;
     
     if(takenDamage && !dracula.getNight()) {
-        console.log("DAMAGED!");
         red.setDepth(10);
         red.setAlpha(.5);
         red.setScrollFactor(0);
@@ -270,9 +268,6 @@ function update ()
         player.anims.play('left', true);
 
         parallaxBackground.tileLeft();
-
-        // console.log(player.body.x);
-
     }
     else if (cursors.right.isDown || xAxis > 0)
     {
