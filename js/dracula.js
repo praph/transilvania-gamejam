@@ -100,6 +100,6 @@ class Dracula{
             this.gameOver();
     }
     gameOver(){
-        alert('cam asta');
+        location.reload();
     }
 }
