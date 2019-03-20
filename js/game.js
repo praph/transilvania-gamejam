@@ -28,7 +28,7 @@ var musicConfig = {
     seek: 0,
     loop: true,
     delay: 0
-}
+};
 
 var player;
 var enemy;
@@ -94,7 +94,7 @@ function preload ()
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
-    this.load.audio('dracula', 'assets/dracula.mp3');
+    this.load.audio('dracula', 'assets/dracula.ogg');
     this.load.audio('wolf', 'assets/Werewolf SOUND EFFECT.mp3');
 }
 
@@ -106,6 +106,7 @@ function create ()
     this.cameras.main.backgroundColor.setTo(153,207,255);
 
     var music = this.sound.add('dracula', 'musicConfig');
+    music.setLoop(true);
     music.play();
     var wolf = this.sound.add('wolf', 'musicConfig');
     wolf.play();

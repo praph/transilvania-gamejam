@@ -27,7 +27,7 @@ var musicConfig = {
     seek: 0,
     loop: true,
     delay: 0
-}
+};
 
 var player;
 var enemy;
@@ -91,7 +91,7 @@ function preload ()
 
     this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
-    this.load.audio('dracula', 'assets/dracula.mp3');
+    this.load.audio('dracula', 'assets/dracula.ogg');
 }
 
 function create ()
@@ -101,7 +101,8 @@ function create ()
 
     this.cameras.main.backgroundColor.setTo(153,207,255);
 
-    var music = this.sound.add('dracula', 'musicConfig');
+    var music = this.sound.add('dracula', musicConfig);
+    music.setLoop(true);
     music.play();
     // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
     // Phaser's cache (i.e. the name you used in preload)
