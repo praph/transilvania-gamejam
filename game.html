@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Draculea</title>
+    <style>
+        html, body {
+            margin: 0;
+            background-color: #ffffff;
+        }
+
+        canvas {
+            background-color: #000000;
+        }
+    </style>
 </head>
 <body>
-    
     <script src="./vendor/phaser.js"></script>
     <script src="./js/ParallaxBackground.js"></script>
     <script src="./js/dracula.js"></script>
@@ -22,5 +31,6 @@
     <script src="./js/scenes/GameOver.js"></script>
 
     <script src="./js/game.js"></script>
+    <div id="phaser-container" style="overflow: hidden; width: 100%; height: 100%;"></div>
 </body>
 </html>
