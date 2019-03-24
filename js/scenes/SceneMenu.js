@@ -1,6 +1,6 @@
-class SceneMainMenu extends Phaser.Scene {
+class SceneMenu extends Phaser.Scene {
     constructor() {
-        super({ key: "SceneMainMenu" });
+        super({ key: "SceneMenu" });
     }
   
     preload() {
@@ -19,13 +19,14 @@ class SceneMainMenu extends Phaser.Scene {
   
     update() {
         if(Phaser.Input.Keyboard.JustDown(this.spaceBar)){
-            window.location = 'game.html';
+            this.scene.start("SceneMain");
         }
         if (this.input.gamepad.total) {
             var pad = this.input.gamepad.getPad(0);
 
-            if(pad.A)
-                window.location = 'game.html';
+            if(pad.A) {
+                this.scene.start("SceneMain");
+            }
         }
     }
   }

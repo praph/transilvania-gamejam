@@ -1,8 +1,9 @@
 class Babe{
-    constructor(Phaser, map, player){
+    constructor(Phaser, map, player, dracula){
         this.Phaser = Phaser;
         this.map = map;
         this.player = player;
+        this.dracula = dracula;
 
         this.enemies = [];
         this.enemies1 = [];
@@ -25,7 +26,7 @@ class Babe{
 
             anim1.destroy();
 
-            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+            this.Phaser.physics.add.collider(this.player, newEnemy, this.hitPlayer, null, Phaser);
 
             this.shoot(newEnemy, Phaser.physics);
         })
@@ -40,7 +41,7 @@ class Babe{
 
             anim1.destroy();
 
-            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+            this.Phaser.physics.add.collider(this.player, newEnemy, this.hitPlayer, null, Phaser);
 
             // this.shoot(newEnemy, Phaser.physics);
         })
@@ -53,7 +54,7 @@ class Babe{
 
             anim1.destroy();
 
-            this.Phaser.physics.add.collider(player, newEnemy, this.hitPlayer, null, Phaser);
+            this.Phaser.physics.add.collider(this.player, newEnemy, this.hitPlayer, null, Phaser);
 
             // this.shoot(newEnemy, Phaser.physics);
         })
@@ -86,14 +87,14 @@ class Babe{
             const usturoi = this.Phaser.physics.add.sprite(enemy.x, enemy.y, "usturoi");
             usturoi.body.setAllowGravity(false);
 
-            if(enemy.x > player.x) {
+            if(enemy.x > this.player.x) {
                 usturoi.body.velocity.x = -250;
             } else {
                 usturoi.body.velocity.x = 250;
             }
 
-            this.Phaser.physics.add.collider(usturoi, this.Phaser.groundLayer, this.destroyBullet, null, Phaser);
-            this.Phaser.physics.add.collider(usturoi, this.player, this.shootPlayer, null, Phaser);
+            this.Phaser.physics.add.collider(usturoi, this.Phaser.groundLayer, this.destroyBullet, null, this);
+            this.Phaser.physics.add.collider(usturoi, this.player, this.shootPlayer, null, this);
         }
 
         setTimeout(() => {
@@ -104,8 +105,7 @@ class Babe{
 
     shootPlayer(bullet){
         bullet.destroy();
-
-        dracula.takeDamage()
+        this.dracula.takeDamage()
     }
     
     /**
@@ -113,7 +113,7 @@ class Babe{
      * @param {*} enemyX
      */
     ifOnCamera(enemyX){
-        if(player.body.x - enemyX < 400 && player.body.x - enemyX > -400)
+        if(this.player.body.x - enemyX < 400 && this.player.body.x - enemyX > -400)
             return 1;
 
         return 0;
@@ -126,8 +126,8 @@ class Babe{
         this.enemies.forEach((enemy, index) => {
             if(!enemy.active)
                 return;
-
-            if(enemy.x > player.x) {
+            let enemySpeed = 0;
+            if(enemy.x > this.player.x) {
                 enemySpeed = -60;
                 enemy.anims.play('baba-left', true);
             } else {
