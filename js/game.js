@@ -17,7 +17,8 @@ var config = {
     scene: [
         SceneIntro,
         SceneMenu,
-        SceneMain
+        SceneMain,
+        SceneGameOver
     ],
     input: {
         gamepad: true,  // add to enable gamepad input

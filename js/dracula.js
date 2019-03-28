@@ -4,7 +4,7 @@ class Dracula {
         this.map = map;
         this.player = player;
 
-        this.lifes = 10;
+        this.lifes = 6;
         this.sunTolerance = 1000;
         this.generatePotions();
 
@@ -99,13 +99,7 @@ class Dracula {
      * take damage
      */
     takeDamage() {
-        if (this.lifes > 1)
+        if (this.lifes > 0)
             this.lifes--;
-        else
-            this.gameOver();
-    }
-
-    gameOver() {
-        location.reload();
-    }
+        }
 }

@@ -225,8 +225,8 @@ class SceneMain extends Phaser.Scene {
         this.babe.animate();
         this.monks.animate();
 
-        if (this.gameOver) {
-            return;
+        if (this.dracula.getLifes() == 0) {
+              this.scene.start("SceneGameOver");
         }
 
         if (this.cursors.left.isDown || xAxis < 0) {
