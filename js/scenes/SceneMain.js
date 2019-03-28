@@ -4,6 +4,12 @@ class SceneMain extends Phaser.Scene {
     }
 
     preload() {
+        let loadingBar = this.add.graphics({
+          fillStyle: {
+            color: 0x8B0000 // red color
+          }
+        });
+
         this.load.spritesheet('dude', 'assets/dude.png', {frameWidth: 48, frameHeight: 60});
         this.load.spritesheet('baba', 'assets/baba.png', {frameWidth: 28, frameHeight: 39});
         this.load.spritesheet('monk', 'assets/monk.png', {frameWidth: 32, frameHeight: 48});
@@ -30,6 +36,10 @@ class SceneMain extends Phaser.Scene {
 
         this.load.audio('dracula', 'assets/dracula.ogg');
         this.load.audio('wolf', 'assets/werewolf.ogg');
+        // making the loading bar
+        this.load.on("progress", (percent) => {
+          loadingBar.fillRect(0, game.renderer.height-50, game.renderer.width * percent, 50);
+        });
     }
 
     create() {
