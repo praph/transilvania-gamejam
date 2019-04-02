@@ -112,7 +112,9 @@ function create ()
     this.tileset = map.addTilesetImage('tile_castle', "tiles");
     this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
     // Parameters: layer name (or index) from Tiled, tileset, x, y
+
     const backgroundCastleLayer = map.createDynamicLayer("Castel", this.tileset_grey, 0, 0);
+    const apa = map.createDynamicLayer("apa", this.tileset, 0, 0);
     groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
     this.groundLayer = groundLayer;
     const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
@@ -120,6 +122,7 @@ function create ()
     const backgroundUsiLayer = map.createDynamicLayer("Usi", this.tileset_grey, 0, 0);
     var coins = map.createFromObjects('Night', 'shadow', { key: 'tile_castle_sprite', frame: 5 });
     var coinsGroup = this.physics.add.group();
+
 
     coins.forEach(sprite => {
         coinsGroup.add(sprite)
@@ -218,7 +221,7 @@ function update ()
         var pad = this.input.gamepad.getPad(0);
     }
     var xAxis = pad ? pad.axes[0].getValue(0) : 0;
-    
+
 
     babe.cleanUpEnemies();
 
