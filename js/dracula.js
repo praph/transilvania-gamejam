@@ -4,7 +4,7 @@ class Dracula {
         this.map = map;
         this.player = player;
 
-        this.lifes = 6;
+        this.lifes = 10;
         this.sunTolerance = 1000;
         this.generatePotions();
 
