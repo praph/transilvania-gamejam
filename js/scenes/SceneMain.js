@@ -165,7 +165,7 @@ class SceneMain extends Phaser.Scene {
         this.buttons = {}
         this.buttons.nightMode = this.input.keyboard.addKey('n');  // Get key object
 
-        this.physics.add.overlap(this.player, coinsGroup, this.oFunctie);
+        this.physics.add.overlap(this.player, coinsGroup, this.oFunctie, null, this);
 
         // night damage
         this.takenDamageText = this.add.text(16, 32, this.takenDamage ? 'la soare!!!' : 'la umbra');
