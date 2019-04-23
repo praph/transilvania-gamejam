@@ -10,7 +10,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 500 },
+            gravity: {y: 500},
             debug: false
         }
     },
@@ -23,8 +23,16 @@ var config = {
     input: {
         gamepad: true,  // add to enable gamepad input
         queue: true
+    },
+    plugins: {
+        global: [
+            {
+                key: 'rexVirtualJoyStick',
+                plugin: rexvirtualjoystickplugin,
+                start: true
+            }
+        ]
     }
 };
-
 
 var game = new Phaser.Game(config);
