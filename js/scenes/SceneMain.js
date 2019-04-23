@@ -194,27 +194,11 @@ class SceneMain extends Phaser.Scene {
             // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
             // forceMin: 16,
             // enable: true
-        })
-            .on('update', this.dumpJoyStickState, this);
+        });
 
-        this.text = this.add.text(690, 30);
-        this.dumpJoyStickState();
+        this.joystickCursors = this.joyStick.createCursorKeys();
     }
 
-    dumpJoyStickState() {
-        var cursorKeys = this.joyStick.createCursorKeys();
-        var s = 'Key down: ';
-        for (var name in cursorKeys) {
-            if (cursorKeys[name].isDown) {
-                s += name + ' ';
-            }
-        }
-
-        s += '\n';
-        s += ('Force: ' + Math.floor(this.joyStick.force * 100) / 100 + '\n');
-        s += ('Angle: ' + Math.floor(this.joyStick.angle * 100) / 100 + '\n');
-        this.text.setText(s);
-    }
 
     oFunctie(sprite, health) {
         this.takenDamage = false;
@@ -259,13 +243,13 @@ class SceneMain extends Phaser.Scene {
               this.scene.start("SceneGameOver");
         }
 
-        if (this.cursors.left.isDown || xAxis < 0) {
+        if (this.cursors.left.isDown || xAxis < 0 || this.joystickCursors.left.isDown) {
             this.player.setVelocityX(-160);
 
             this.player.anims.play('left', true);
 
             this.parallaxBackground.tileLeft();
-        } else if (this.cursors.right.isDown || xAxis > 0) {
+        } else if (this.cursors.right.isDown || xAxis > 0 || this.joystickCursors.right.isDown) {
             this.player.setVelocityX(160);
 
             this.player.anims.play('right', true);
@@ -280,9 +264,12 @@ class SceneMain extends Phaser.Scene {
         if (this.cursors.up.isDown && this.player.body.onFloor()) {
             this.player.setVelocityY(-370);
         }
-        if (pad && pad.A && player.body.onFloor())
+        if (pad && pad.A && player.body.onFloor()) {
             this.player.setVelocityY(-370);
-
+        }
+        if(this.joystickCursors.up.isDown && this.player.body.onFloor()){
+            this.player.setVelocityY(-370);
+        }
 
         if (this.dracula.getNight()) {
             var texture = this.sys.textures.get('tiles');
