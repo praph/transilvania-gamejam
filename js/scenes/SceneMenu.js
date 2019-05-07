@@ -13,7 +13,11 @@ class SceneMenu extends Phaser.Scene {
 
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.pointer = this.scene.scene.input.activePointer;
+        // this.pointer = this.scene.scene.input.activePointer;
+
+        this.scene.scene.input.on('pointerdown', function(pointer){
+            this.scene.scene.start("SceneMain");
+        });
     }
   
     update() {
@@ -22,9 +26,9 @@ class SceneMenu extends Phaser.Scene {
             this.scene.start("SceneMain");
         }
 
-        if (this.pointer.isDown) {
-            this.scene.start("SceneMain");
-        }
+        // if (this.pointer.isDown) {
+        //     this.scene.start("SceneMain");
+        // }
 
         if (this.input.gamepad.total) {
             var pad = this.input.gamepad.getPad(0);
