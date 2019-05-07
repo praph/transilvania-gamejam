@@ -13,10 +13,7 @@ class SceneMenu extends Phaser.Scene {
 
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        debugger;
         this.pointer = this.scene.scene.input.activePointer;
-
-        // this.spaceBar.on('')
     }
   
     update() {
