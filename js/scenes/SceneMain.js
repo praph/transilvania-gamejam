@@ -32,7 +32,7 @@ class SceneMain extends Phaser.Scene {
         this.load.image("tolerance-inside", "assets/tolerance-inside.png");
         this.load.image("tolerance-placeholder", "assets/tolerance-placeholder.png");
 
-        this.load.tilemapTiledJSON("map", "assets/map/map800split1.json");
+        this.load.tilemapTiledJSON("map", "assets/map/map800.json");
 
         this.load.audio('dracula', 'assets/dracula.ogg');
         this.load.audio('wolf', 'assets/werewolf.ogg');
