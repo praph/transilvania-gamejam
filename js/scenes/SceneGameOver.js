@@ -12,16 +12,15 @@ class SceneGameOver extends Phaser.Scene {
         end.body.allowGravity = false;
 
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.pointer = this.scene.scene.input.activePointer;
+
+        this.scene.scene.input.on('pointerdown', function(pointer){
+            this.scene.scene.start("SceneMain");
+        });
 
     }
 
     update() {
         if(Phaser.Input.Keyboard.JustDown(this.spaceBar)){
-            this.scene.start("SceneMain");
-        }
-
-        if (this.pointer.isDown) {
             this.scene.start("SceneMain");
         }
 
