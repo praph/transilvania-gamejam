@@ -32,7 +32,7 @@ class SceneMain extends Phaser.Scene {
         this.load.image("tolerance-inside", "assets/tolerance-inside.png");
         this.load.image("tolerance-placeholder", "assets/tolerance-placeholder.png");
 
-        this.load.tilemapTiledJSON("map", "assets/map/map800split1.json");
+        this.load.tilemapTiledJSON("map", "assets/map/map800all.json");
 
         this.load.audio('dracula', 'assets/dracula.ogg');
         this.load.audio('wolf', 'assets/werewolf.ogg');
@@ -85,11 +85,10 @@ class SceneMain extends Phaser.Scene {
         this.tileset = map.addTilesetImage('tile_castle', "tiles");
         this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
         // Parameters: layer name (or index) from Tiled, tileset, x, y
-        const backgroundCastleLayer = map.createDynamicLayer("Castel", this.tileset_grey, 0, 0);
-        this.groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
-        const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
-        // const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
-        const backgroundUsiLayer = map.createDynamicLayer("Usi", this.tileset_grey, 0, 0);
+        const backgroundCastleLayer = map.createStaticLayer("Castel", this.tileset_grey, 0, 0);
+        this.groundLayer = map.createStaticLayer("Ground", this.tileset_grey, 0, 0);
+        const groundNightLayer = map.createStaticLayer("GroundNight", this.tileset, 0, 0);
+        const backgroundUsiLayer = map.createStaticLayer("Usi", this.tileset_grey, 0, 0);
         var coins = map.createFromObjects('Night', 'shadow', {key: 'tile_castle_sprite', frame: 5});
         var coinsGroup = this.physics.add.group();
 
