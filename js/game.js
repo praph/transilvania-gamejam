@@ -18,6 +18,9 @@ var config = {
         SceneIntro,
         SceneMenu,
         SceneMain,
+        SceneMain2,
+        SceneMain3,
+        SceneMain4,
         SceneGameOver
     ],
     input: {

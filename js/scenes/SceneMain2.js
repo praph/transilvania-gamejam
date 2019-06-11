@@ -1,13 +1,13 @@
-class SceneMain extends Phaser.Scene {
+class SceneMain2 extends Phaser.Scene {
     constructor() {
-        super({key: "SceneMain"});
+        super({key: "SceneMain2"});
     }
 
     preload() {
         let loadingBar = this.add.graphics({
-          fillStyle: {
-            color: 0x8B0000 // red color
-          }
+            fillStyle: {
+                color: 0x8B0000 // red color
+            }
         });
 
         this.load.spritesheet('dude', 'assets/dude.png', {frameWidth: 48, frameHeight: 60});
@@ -32,13 +32,13 @@ class SceneMain extends Phaser.Scene {
         this.load.image("tolerance-inside", "assets/tolerance-inside.png");
         this.load.image("tolerance-placeholder", "assets/tolerance-placeholder.png");
 
-        this.load.tilemapTiledJSON("map", "assets/map/map800split1.json");
+        this.load.tilemapTiledJSON("map2", "assets/map/map800split2.json");
 
         this.load.audio('dracula', 'assets/dracula.ogg');
         this.load.audio('wolf', 'assets/werewolf.ogg');
         // making the loading bar
         this.load.on("progress", (percent) => {
-          loadingBar.fillRect(0, game.renderer.height-50, game.renderer.width * percent, 50);
+            loadingBar.fillRect(0, game.renderer.height-50, game.renderer.width * percent, 50);
         });
     }
 
@@ -70,7 +70,7 @@ class SceneMain extends Phaser.Scene {
 // layers
         this.groundLayer = {};
         // create map
-        const map = this.make.tilemap({key: "map"})
+        const map = this.make.tilemap({key: "map2"});
 
         this.cameras.main.backgroundColor.setTo(153, 207, 255);
 
@@ -85,10 +85,11 @@ class SceneMain extends Phaser.Scene {
         this.tileset = map.addTilesetImage('tile_castle', "tiles");
         this.tileset_grey = map.addTilesetImage('tile_castle_grey', "tiles_grey");
         // Parameters: layer name (or index) from Tiled, tileset, x, y
-        const backgroundCastleLayer = map.createStaticLayer("Castel", this.tileset_grey, 0, 0);
-        this.groundLayer = map.createStaticLayer("Ground", this.tileset_grey, 0, 0);
-        const groundNightLayer = map.createStaticLayer("GroundNight", this.tileset, 0, 0);
-        const backgroundUsiLayer = map.createStaticLayer("Usi", this.tileset_grey, 0, 0);
+        const backgroundCastleLayer = map.createDynamicLayer("Castel", this.tileset_grey, 0, 0);
+        this.groundLayer = map.createDynamicLayer("Ground", this.tileset_grey, 0, 0);
+        const groundNightLayer = map.createDynamicLayer("GroundNight", this.tileset, 0, 0);
+        // const backgroundLayer = map.createDynamicLayer("Background", this.tileset_grey, 0, 0);
+        const backgroundUsiLayer = map.createDynamicLayer("Usi", this.tileset_grey, 0, 0);
         var coins = map.createFromObjects('Night', 'shadow', {key: 'tile_castle_sprite', frame: 5});
         var coinsGroup = this.physics.add.group();
 
@@ -206,7 +207,7 @@ class SceneMain extends Phaser.Scene {
     update() {
         console.log(this.player.x);
         if (this.player.x > 6000){
-            this.scene.start("SceneMain2");
+            this.scene.start("SceneMain3");
         }
         if (this.input.gamepad.total) {
             var pad = this.input.gamepad.getPad(0);
@@ -243,7 +244,7 @@ class SceneMain extends Phaser.Scene {
         this.monks.animate();
 
         if (this.dracula.getLifes() == 0) {
-              this.scene.start("SceneGameOver");
+            this.scene.start("SceneGameOver");
         }
 
         if (this.cursors.left.isDown || xAxis < 0 || this.joystickCursors.left.isDown) {
